@@ -10,8 +10,6 @@ class BpmnViewerComponente extends Component {
     this.viewer = new BpmnViewer();
     this.generateId = 'bpmnContainer'+ Date.now();
     this.processDefinition = 'f4cf9280-72b2-11e9-afe1-0af90a69b8d6';
-  
-    
   }
 
   
