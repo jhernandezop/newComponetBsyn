@@ -119,6 +119,7 @@ class UnaFicha extends Component {
   actualizarOverlayXml = (event) => {
     event.preventDefault();
     this.props.actualizarOverlayXml(this.state.datos_ficha.dst);
+    this.llamarFormulario();
 
 
   }
@@ -168,7 +169,7 @@ class UnaFicha extends Component {
     const detalle = this.state.datos_ficha
     
 
-    return ( <div className="card ficha" onClick={this.actualizarOverlayXml} onDoubleClick = {this.llamarFormulario}>
+    return ( <div className="card ficha"  onDoubleClick = {this.actualizarOverlayXml}>
              <div className="card-header" id="headingOne">
                 <h2 className="mb-0">
                   <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#collapseOne_"+this.state.caso_ES.replace(".","")} aria-expanded="false" aria-controls={"collapseOne_"+this.state.caso_ES.replace(".","")}>
