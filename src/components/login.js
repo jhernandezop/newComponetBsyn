@@ -20,7 +20,7 @@ class Login extends Component {
     .then(res => res.json())
     .then(response => {if(response){
                     //console.log(response.casos);
-                      this.props.estadoLogin()
+                      
                      
                       const agrupaciones = []
                       const overlays = []
@@ -37,7 +37,9 @@ class Login extends Component {
 
                       }); 
                       //console.log(overlays)
-                      this.props.actualizarFichas(response.casos, agrupaciones, )
+                      this.props.actualizarFichas(response.casos, agrupaciones, "")
+                      console.log("PASSSSSSS")
+                      this.props.estadoLogin()
 
                     }})
     .catch(error => console.error('Error:', error));

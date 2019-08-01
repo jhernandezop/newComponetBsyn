@@ -1,3 +1,56 @@
 .contenedorFormularios{
-	border:1px solid #000;
+	/*border:1px solid #000;*/
+    position: absolute;
+    top: 0;
+    bottom: 0px;
+    overflow: hidden;
+    overflow-y: auto;
+    width: inherit;
+    background-color:#d6d6d6;
+    font-weight: 100;
+        padding-bottom: 150px;
+}
+.formio-modified, .contenedorFormularios > div{
+	width: 100%;
+	padding-top: 0px;
+}
+
+.contenedorFormularios .card{
+	border:none;
+}
+.contenedorFormularios .formio-component > .card > .card-header{
+	background-color: #d6d6d6;
+	border-bottom:none;
+	    padding-top: 0px;
+}
+.contenedorFormularios .formio-component > .card > .card-header .card-header-tabs {
+    margin-right: -.625rem;
+    margin-bottom: -.70rem;
+    margin-left: -.625rem;
+    border-bottom: 0;
+}
+
+.contenedorFormularios .contenedorFormularios .card-header{
+	background-color:#d6d6d6;
+	border-bottom:none;
+}
+
+.contenedorFormularios .nav-tabs .nav-item.show .nav-link, .contenedorFormularios .nav-tabs .nav-link.active {
+background-color: #FFF;
+    border-color:#fff;
+    color: #000;
+}
+
+.contenedorFormularios .nav-tabs .nav-link{
+	background-color: #b6b6b6;
+	border-bottom:0px;
+	color: #FFF;
+}
+
+.contenedorFormularios .nav-tabs .nav-link:hover{
+	border-color: #FFF;
+}
+
+.contenedorFormularios .nav-tabs li {
+	padding-left: 5px;
 }

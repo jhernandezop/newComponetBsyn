@@ -7,22 +7,48 @@ class BpmnViewerComponente extends Component {
 //this.overlays = [{"ID_ETAPA_PROCESO":"SCAN_OK", "NOTA":"AQUI HAY 2 FICHAS" },{"ID_ETAPA_PROCESO":"sid-D7F237E8-56D0-4283-A3CE-4F0EFE446138", "NOTA":"AQUI HAY 1 FICHAS" }]
   constructor(props){
     super(props);
-    this.viewer = new BpmnViewer();
-    this.generateId = 'bpmnContainer'+ Date.now();
-    this.processDefinition = 'f4cf9280-72b2-11e9-afe1-0af90a69b8d6';
+    this.state = {
+      xmlViwEstadoProceso:""
+    }
+    
+  }
+
+ componentDidMount() {
+    this.componentWillReceiveProps({xmlProceso:this.props.xmlProceso, xmlOverlays: this.props.xmlOverlays});
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps)
+    /*if(nextProps.xmlOverlays[0]){
+      console.log("CONSTRUIDO")
+      if(this.id_ficha_actual!=nextProps.xmlOverlays[0].ID_FICHA){
+        this.construirDiagrama(nextProps.xmlOverlays);
+      }
+
+    }*/
+    this.bpmn(nextProps)
+  }
+
+  enviarEstadoProcesod = (event) => {
+    event.preventDefault();
+    this.props.estadoProceso()
+
+  }
+
+
+  enviarEstadoProceso(){
+    
   }
 
   
 
-  construirDiagrama(Overlays) {
-    console.log(Overlays)
-    if(!Overlays){
-      Overlays=this.props.xmlOverlays
-    }
-  //AQUI SE ATACHA EL PROCESO AL ID DEL ELEMENTO
-      this.viewer.attachTo('#'+ this.generateId);
-      // FUNCION D EIMPORTACION  CREACION Y OVERLAYS
-      function importXML(xml,Viewer, NotasOverlays) {
+
+  bpmn(nextProps){
+
+        const xml = nextProps.xmlProceso
+        const Viewer = new BpmnViewer();
+        const NotasOverlays=nextProps.xmlOverlays
+        
         // SE IMPORTA
         Viewer.importXML(xml, function(err) {
           //SI HAY ERROR SE ARROJA A LA CONSOLA
@@ -51,27 +77,55 @@ class BpmnViewerComponente extends Component {
             });
           }
           
-      });
-      }
-      // IMBOCO LA FUNCION
-      importXML(this.props.xmlProceso, this.viewer, Overlays);
+        })
+        
+        
+        //EVENTOS
+        var eventBus = Viewer.get('eventBus');
+
+        // you may hook into any of the following events
+        var events = [
+          //'element.hover',
+          //'element.out',
+          'element.click',
+          'element.dblclick',
+          //'element.mousedown',
+          //'element.mouseup'
+        ];
+
+        
+
+        events.forEach(function(event) {
+          eventBus.on(event, function(e) {
+            // e.element = the model element
+            // e.gfx = the graphical element
+            if(event==="element.click" &&  e.element.id==="sid-5134932A-1863-4FFA-BB3C-A4B4078B11A9"){
+                  
+                  document.getElementById("A-tab").click();
+            }else if(event==="element.click" &&  e.element.id==="SCAN_OK"){
+                  document.getElementById("B-tab").click();
+
+            }
+             console.log(event, 'on', e.element);
+             document.getElementById("bpmnContainer").innerHTML = ""
+/**/         Viewer.attachTo('#bpmnContainer');
+            
+
+          });
+
+        });
+
+    
+        document.getElementById("bpmnContainer").innerHTML = ""
+/**/    Viewer.attachTo('#bpmnContainer');
+
+
   }
-
-  
-  
-
-  componentWillReceiveProps(nextProps){
-    this.construirDiagrama(nextProps.xmlOverlays);
-  }
-
-  
-
-
 
 
 
     render(){
-        return <div className="col-lg-12 BpmnViewer" id={this.generateId}></div>;
+        return <div className="col-lg-12 BpmnViewer" id="bpmnContainer"></div>;
     }
 }
 
