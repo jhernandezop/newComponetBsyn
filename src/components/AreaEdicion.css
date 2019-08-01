@@ -9,6 +9,8 @@
     background-color:#d6d6d6;
     font-weight: 100;
         padding-bottom: 150px;
+        padding-left: 20px;
+        padding-right: 20px;
 }
 .formio-modified, .contenedorFormularios > div{
 	width: 100%;
@@ -22,6 +24,7 @@
 	background-color: #d6d6d6;
 	border-bottom:none;
 	    padding-top: 0px;
+	    padding-left: 5px;
 }
 .contenedorFormularios .formio-component > .card > .card-header .card-header-tabs {
     margin-right: -.625rem;
@@ -42,7 +45,7 @@ background-color: #FFF;
 }
 
 .contenedorFormularios .nav-tabs .nav-link{
-	background-color: #b6b6b6;
+	background-color: #00A09D;
 	border-bottom:0px;
 	color: #FFF;
 }
@@ -53,4 +56,9 @@ background-color: #FFF;
 
 .contenedorFormularios .nav-tabs li {
 	padding-left: 5px;
+}
+
+.formio-component > .card{
+	box-shadow: -5px 16px 14px 0px rgba(0, 0, 0, 0.2);
+
 }

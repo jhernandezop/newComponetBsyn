@@ -44,29 +44,20 @@ class ConstruirFichas extends Component {
 
 
 
-
+/*<div id='lista_opciones' className='tab-content'>
+                <ul  className='nav nav-tabs justify-content-center'>
+                    {grupo_pestnias}
+                </ul>
+              </div>*/
       
       return ( 
           <div id="divFichas" className='row'>
-            <div id="search">
-              <div className="col-auto">
-                <div className="input-group mb-2">
-                  <div className="input-group-prepend">
-                    <div className="input-group-text"><i className="fas fa-search"></i></div>
-                  </div>
-                  <input type="text" className="form-control"  placeholder="Buscar" />
-                </div>
-              </div>
 
-            </div>
-
-            <div id='lista_opciones' className='tab-content'>
-              <ul  className='nav nav-tabs justify-content-center'>
-                  {grupo_pestnias}
-              </ul>
-            </div>
+           
+              
+             
             
-            <div id="lista_fichas" className='col-sm-12 col-md-12 col-lg-12 accordion'  >
+            <div id="lista_fichas" className="col-sm-12 col-md-12 col-lg-12 accordion h-75"  >
               
                 {grupo_fichas}
               
@@ -141,7 +132,7 @@ class UnaFicha extends Component {
                 </div>
               </div>
               <div className="card-body telefono">
-                <button type="button" className="btn btn-secondary">
+                <button type="button" className="btn btn-light">
                     <i className="fas fa-headset"></i> {this.state.datos_ficha.src}
                     <span className="nro_gestion badge badge-pill badge-light">{this.state.nro_gestion}</span>
                 </button>

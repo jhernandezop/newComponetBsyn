@@ -39,6 +39,7 @@ class ProcesoManual extends Component {
                   <span className="cantidad" onClick={() => this.props.filtroFichas(number.tag)}>
                     {number.cantidad}
                     <span className="tag"  >{number.tag}</span>
+                    
                   </span>
                   
                 </li>
@@ -47,12 +48,59 @@ class ProcesoManual extends Component {
                   <span className="cantidad off" onClick={() => this.props.filtroFichas(number.tag)}>
                     {number.cantidad}
                     <span className="tag"  >{number.tag}</span>
+                    
                   </span>
                   
                 </li>
 
              
 
+        );
+
+        return ( <ul id="linea_proceso" className="linea_proceso" >
+          <span className="linea"></span>
+          {elementos_proceso}
+        </ul>);
+    }
+}
+
+
+class Canales extends Component {
+  
+//this.overlays = [{"ID_ETAPA_PROCESO":"SCAN_OK", "NOTA":"AQUI HAY 2 FICHAS" },{"ID_ETAPA_PROCESO":"sid-D7F237E8-56D0-4283-A3CE-4F0EFE446138", "NOTA":"AQUI HAY 1 FICHAS" }]
+  constructor(props){
+    super(props);
+    this.state = {
+      canales:[]
+    }
+    
+  }
+
+ componentDidMount() {
+    this.componentWillReceiveProps();
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps)
+  }
+
+  
+  
+
+
+    render(){
+
+        const proceso = this.props.canales;
+
+
+        const elementos_proceso = proceso.map((number) => 
+                <li key={number.tag} >
+                  <span className="cantidad">
+                    {number.tag.charAt(0)}:
+                    {number.cantidad}
+                    <span className="tag"  ></span>
+                  </span>
+                </li>
         );
 
         return ( <ul id="linea_proceso" className="linea_proceso" >
