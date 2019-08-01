@@ -43,7 +43,7 @@ class App extends Component {
        procesomanual:[
                         {tag:"contacto", cantidad:0, ver: true, canales:[]},
                         {tag:"cotizaciones", cantidad:0, ver: true, canales:[]},
-                        {tag:"seguimiento", cantidad:0, ver: true, canales:[]}
+                        {tag:"seguimiento", cantidad:0, ver: true, canales:[{tag:"web",cantidad:0},{tag:"telefonia",cantidad:0}]}
                       ],
        procesomanualFiltro:[]
 
@@ -81,11 +81,34 @@ class App extends Component {
     //this.setState({xmlOverlays: overlays});
     //ACTUALIZAR CANTIDADES DEL PROCESO
     const procesomanual=this.state.procesomanual
+
+    //RRECORRO LA FICHAS
     fichas.forEach(function(element_a, index_a) {
+
+        //RRECORRO EL PROCESO
         procesomanual.forEach(function(element_b, index_b) {
             if(element_b.tag==element_a.estado_proceso){
                 procesomanual[index_b].cantidad=procesomanual[index_b].cantidad+1
             }
+            
+            //SI EXISTEN CANALES EN EL PROCESO
+            //console.log(element_b.canales.length)
+            if(element_b.canales.length>0){
+
+              //RRECORRO LOS CANALES
+               element_b.canales.forEach(function(element_c, index_c) {
+                    console.log(  element_b.canales[index_c].tag+"/"+element_a.tipo_caso)
+                     if( element_b.canales[index_c].tag == element_a.tipo_caso){
+                        console.log("SUMO")
+                        console.log(element_a.caso_ES)
+                          procesomanual[index_b].canales[index_c].cantidad=procesomanual[index_b].canales[index_c].cantidad+1
+                      }
+
+               })
+            
+
+            }
+
         });
     })
     this.setState({procesomanual:procesomanual})
@@ -172,7 +195,22 @@ class App extends Component {
                 
                 
                 <div id="barra_lateral_fichas" className="col-2" style={{display: (this.state.expandida ? 'block' : 'none')}}>
-                   <div className="row h-100">
+                   
+                   <div className="row h-25">
+                     <div id="search">
+                        <div className="col-auto">
+                          <div className="input-group mb-2">
+                            
+                            <input type="text" className="form-control"  placeholder="Buscar" />
+                            <div className="input-group-prepend">
+                              <div className="input-group-text"><i className="fas fa-search"></i></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+
+                   <div className="row h-75">
                       
                       <div className="col-12">
                         <ConstruirFichas 
@@ -188,14 +226,26 @@ class App extends Component {
                 <div className={this.state.expandida ? 'col-10' : 'col-12'}>
                   <div className="row h-100">
                       <div id="indicadores" className="col-12 h-25">
-                         <div className="row h-100">
-                            <div className="col-1">
-                              <div className="row">
+                         <div className="row contenedor_indicadores">
+                            
+                            <div className="col-2">
                                 <a className="expandir" onClick={this.interfazExpandida}>  
                                     {this.props.estado ? <i className="fas fa-angle-right"></i> : <i className="fas fa-angle-left"></i>}
                                 </a>
+
+                              <div className="row indicaddor">
+                                <div className="col-12">
+                                   <div className="row">
+                                      <div className="col-12 cantidad">256</div>
+                                      <div className="col-12 descripcion">Con. en Cola</div>
+                                   </div>
+                                </div>
                               </div>
+
+
+
                             </div>
+                            
                             <div className="col-6">
                               <div className="row">
                                   <ProcesoManual 
@@ -204,7 +254,8 @@ class App extends Component {
                                       filtroFichas={this.filtroFichas} />
                               </div>
                             </div>
-                            <div className="col-3">
+                            
+                            <div className="col-4">
                               
 
                               <div className="row indicaddor">
@@ -227,8 +278,7 @@ class App extends Component {
 
 
                             </div>
-                             <div className="col-2">
-                             </div>
+                            
                             
                           
                         </div>
@@ -267,7 +317,7 @@ class OpcioneDeNavegacion extends Component {
 
     const opciones = this.props.opciones
     const listItems = opciones.map((number) =>
-      <button key={number.opcion} type="button" className="btn btn-secondary">
+      <button key={number.opcion} type="button" className="btn btn-light">
         <i className={number.opcion}></i>
       </button>
     );
