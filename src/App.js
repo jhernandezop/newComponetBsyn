@@ -7,6 +7,7 @@ import ConstruirFichas from './components/ConstruirFichas';
 import AreaEdicion from './components/AreaEdicion';
 import PrimerGrafico from './components/Dgraficos';
 import ProcesoManual from './components/ProcesoManual';
+import Vertelefono from './components/VerTelefono';
 //import Footer from './components/Footer';
 
 
@@ -19,6 +20,7 @@ class App extends Component {
        expandida: true,
        estadoLogin:false,
        tipoLogin:"standar",
+       verTelefono: false,
        interfaz:"gestion",
        grupos:[],
        fichas:[],
@@ -33,6 +35,14 @@ class App extends Component {
                           funcion:"reporte"
                         },
                         {
+                          opcion:"far fa-calendar-alt", 
+                          funcion:"calendario"
+                        },
+                        {
+                          opcion:"fa fa-headset", 
+                          funcion:"telefono"
+                        },
+                        {
                           opcion:"fas fa-user-times", 
                           funcion:"salir"
                         }
@@ -44,7 +54,15 @@ class App extends Component {
        procesomanual:[
                         {tag:"contacto", cantidad:0, ver: true, canales:[]},
                         {tag:"cotizaciones", cantidad:0, ver: true, canales:[]},
-                        {tag:"seguimiento", cantidad:0, ver: true, canales:[{tag:"web",cantidad:0},{tag:"telefonia",cantidad:0}]}
+                        {
+                          tag:"seguimiento", 
+                          cantidad:0, 
+                          ver: true, 
+                          canales:[
+                                    {tag:"web",cantidad:0, ver: true},
+                                    {tag:"telefonia",cantidad:0, ver: true}
+                                  ]
+                        }
                       ],
        procesomanualFiltro:[]
 
@@ -94,8 +112,7 @@ class App extends Component {
             }
             
             //SI EXISTEN CANALES EN EL PROCESO
-            //console.log(element_b.canales.length)
-            if(element_b.canales.length>0){
+            if(element_b.canales.length>0 && element_b.tag==element_a.estado_proceso){
 
               //RRECORRO LOS CANALES
                element_b.canales.forEach(function(element_c, index_c) {
@@ -140,7 +157,7 @@ class App extends Component {
 
 
   filtroFichas(filtro){
-    //console.log(filtro)
+    console.log(filtro)
 
     //procesomanualFiltro
     const filtro_actual=this.state.procesomanualFiltro
@@ -151,23 +168,39 @@ class App extends Component {
       filtro_actual.push(filtro)
       //ACTUALIZO EL RPOCESO
       procesomanual.forEach(function(element, index) {
+        //PRIMER NIVEL
         if(element.tag==filtro){
             procesomanual[index].ver=false
         }
+        //SEGUNDO NIVEL
+        element.canales.forEach(function(element_b, index_b) {
+          if(element_b.tag==filtro){
+            procesomanual[index].canales[index_b].ver=false
+          }
+        })
+
+
       });
     }else{
       
       filtro_actual.splice(filtro_actual.indexOf(filtro), 1)
       //ACTUALIZO EL RPOCESO
        procesomanual.forEach(function(element, index) {
+        //PRIMER NIVEL
         if(element.tag==filtro){
             procesomanual[index].ver=true
         }
+        //SEGUNDO NIVEL
+        element.canales.forEach(function(element_b, index_b) {
+          if(element_b.tag==filtro){
+            procesomanual[index].canales[index_b].ver=true
+          }
+        })
       });
     }
     this.setState({procesomanualFiltro:filtro_actual})
     this.setState({procesomanual:procesomanual})
-   // console.log(this.state.procesomanualFiltro)
+    console.log(this.state.procesomanualFiltro)
     //if()
     //this.setState({edicion:{"caso_ES": caso_ES, "datosFormulario":datosFormulario}});
     
@@ -181,6 +214,14 @@ class App extends Component {
     if(opcion=="salir"){
       this.setState({estadoLogin:false})
       this.setState({interfaz:"gestion"})
+    }else if(opcion=="telefono"){
+
+      this.setState(state => ({
+        verTelefono: !state.verTelefono
+      }));
+
+      console.log(this.state.verTelefono)
+
     }else{
       this.setState({interfaz:opcion})
 
@@ -190,6 +231,7 @@ class App extends Component {
 
   render() {
 
+   
     
     if(this.state.estadoLogin===false){
 
@@ -198,7 +240,12 @@ class App extends Component {
         );
     }else if(this.state.estadoLogin===true &&  this.state.interfaz==="gestion"){
       return (
+
         <div className="container-fluid h-100">
+          
+
+          {this.state.verTelefono ==true && <Vertelefono />}
+          
           <div className="row">
             <div className="col-12">
                         <OpcioneDeNavegacion  
@@ -331,6 +378,25 @@ class App extends Component {
           <div id="contenedor_app" className="row h-100 ">
                 <iframe src="https://ks2.openpartner.cl/s/gildemeister/app/kibana#/dashboard/c318d240-b4a8-11e9-8613-03e1f136a0bd?embed=true&_g=(filters%3A!()%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3A%272019-07-01T00%3A00%3A00.000Z%27%2Cto%3A%272019-08-01T23%3A59%3A59.999Z%27))" height="100%" width="100%"></iframe>
                
+                
+          </div>
+        </div>
+        );
+    } else if(this.state.estadoLogin===true &&  this.state.interfaz==="calendario"){
+      return (
+        <div className="container-fluid h-100">
+          <div className="row">
+            <div className="col-12">
+                        <OpcioneDeNavegacion  
+                          opciones={this.state.opcionesOsuario} 
+                          interfazExpandida={this.interfazExpandida} 
+                          estado={this.state.expandida}
+                          navegarInterfaz={this.navegarInterfaz}
+                        />
+            </div>
+          </div>
+          <div id="contenedor_app" className="row h-100 ">
+                
                 
           </div>
         </div>
