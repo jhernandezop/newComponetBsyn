@@ -92,6 +92,32 @@ class UnaFicha extends Component {
 
   }
 
+  llamarCliente(numero) {
+      console.log(numero)
+
+    fetch("http://172.27.86.16:3000/bsync/face/call", {
+        "method": "POST",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": JSON.stringify({
+          "agente": "3999",
+          "accion": "Llamar",
+          "datos": {
+            "destino": "979670431"
+          }
+        })
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    
+
+  }
+
   render(){
 
     const indicador=this.state.datos_ficha.calldate.split("T", 2)
@@ -132,7 +158,7 @@ class UnaFicha extends Component {
                 </div>
               </div>
               <div className="card-body telefono">
-                <button type="button" className="btn btn-light">
+                <button type="button" onClick={() => this.llamarCliente(this.state.datos_ficha.src)} className="btn btn-light">
                     <i className="fas fa-headset"></i> {this.state.datos_ficha.src}
                     <span className="nro_gestion badge badge-pill badge-light">{this.state.nro_gestion}</span>
                 </button>
