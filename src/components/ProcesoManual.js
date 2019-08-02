@@ -36,19 +36,19 @@ class ProcesoManual extends Component {
         const elementos_proceso = proceso.map((number) => (number.ver==true) ?
              
                 <li key={number.tag}  className="" style={estilos}>
-                  <span className="cantidad" onClick={() => this.props.filtroFichas(number.tag)}>
-                    {number.cantidad}
-                    <span className="tag"  >{number.tag}</span>
-                    
+                  <span className="cantidad" >
+                    <div onClick={() => this.props.filtroFichas(number.tag)}>{number.cantidad}</div>
+                    <Canales  canales={number.canales} filtroFichas={this.props.filtroFichas}/>
+                    <div className="tag"  >{number.tag}</div>
                   </span>
                   
                 </li>
               :
                 <li key={number.tag}  className="" style={estilos}>
-                  <span className="cantidad off" onClick={() => this.props.filtroFichas(number.tag)}>
-                    {number.cantidad}
-                    <span className="tag"  >{number.tag}</span>
-                    
+                  <span className="cantidad off" >
+                    <div onClick={() => this.props.filtroFichas(number.tag)}>{number.cantidad}</div>
+                    <Canales  canales={number.canales} filtroFichas={this.props.filtroFichas} />
+                    <div className="tag"  >{number.tag}</div>
                   </span>
                   
                 </li>
@@ -58,9 +58,9 @@ class ProcesoManual extends Component {
         );
 
         return ( <ul id="linea_proceso" className="linea_proceso" >
-          <span className="linea"></span>
-          {elementos_proceso}
-        </ul>);
+                    <span className="linea"></span>
+                    {elementos_proceso}
+                  </ul>);
     }
 }
 
@@ -84,6 +84,16 @@ class Canales extends Component {
     console.log(nextProps)
   }
 
+  retornariconos(tipo){
+
+    if(tipo=="w" || tipo=="W"){
+      return 'fas fa-desktop'
+    }else if(tipo=="t" || tipo=="T"){
+      return 'fas fa-mobile-alt'
+    }
+
+  }
+
   
   
 
@@ -91,22 +101,32 @@ class Canales extends Component {
     render(){
 
         const proceso = this.props.canales;
+        console.log(proceso)
 
 
-        const elementos_proceso = proceso.map((number) => 
-                <li key={number.tag} >
-                  <span className="cantidad">
-                    {number.tag.charAt(0)}:
+        const elementos_proceso = proceso.map((number) => (number.ver==true) ?
+                
+                  <span className="totales" key={number.tag} onClick={() => this.props.filtroFichas(number.tag)}>
+                    {number.tag.charAt(0).toUpperCase()}:
                     {number.cantidad}
-                    <span className="tag"  ></span>
                   </span>
-                </li>
+                
+                :
+               
+                  <span className="totales off" key={number.tag} onClick={() => this.props.filtroFichas(number.tag)}>
+                    {number.tag.charAt(0).toUpperCase()}:
+                    {number.cantidad}
+                  </span>
+                
+                
         );
 
-        return ( <ul id="linea_proceso" className="linea_proceso" >
-          <span className="linea"></span>
-          {elementos_proceso}
-        </ul>);
+
+        return ( <div className="marcadores">
+                    <div>
+                      {elementos_proceso}
+                    </div>
+                  </div>);
     }
 }
 

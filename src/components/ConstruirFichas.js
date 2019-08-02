@@ -78,7 +78,8 @@ class UnaFicha extends Component {
           datos_ficha: this.props.datosFicha.datos_ficha,
           estado_proceso: this.props.datosFicha.estado_proceso,
           nro_gestion: this.props.datosFicha.nro_gestion,
-          timeline: this.props.datosFicha.timeline
+          timeline: this.props.datosFicha.timeline,
+          tipo_caso:this.props.datosFicha.tipo_caso
     }
 
 
@@ -126,12 +127,14 @@ class UnaFicha extends Component {
 
     const estado_proceso=this.state.estado_proceso
     const filtro= this.props.filtro
+
+    const tipo_caso=this.state.tipo_caso
     
-    //console.log(filtro)
+    console.log(filtro.indexOf(tipo_caso))
     //console.log(estado_proceso)
     //console.log(filtro.indexOf(estado_proceso))
     
-    if(filtro.indexOf(estado_proceso)===-1){
+    if(filtro.indexOf(estado_proceso)==-1 && filtro.indexOf(tipo_caso)==-1){
       return ( <div className="card ficha"  onDoubleClick = {this.llamarFormulario}>
              <div className="card-header" id="headingOne">
                 <h2 className="mb-0">
