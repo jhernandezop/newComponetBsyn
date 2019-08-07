@@ -8,6 +8,10 @@ import AreaEdicion from './components/AreaEdicion';
 import PrimerGrafico from './components/Dgraficos';
 import ProcesoManual from './components/ProcesoManual';
 import Vertelefono from './components/VerTelefono';
+import Agenda from './components/Agenda';
+import Search from './components/Search';
+
+
 //import Footer from './components/Footer';
 
 
@@ -21,6 +25,7 @@ class App extends Component {
        estadoLogin:false,
        tipoLogin:"standar",
        verTelefono: false,
+       verAgenda:false,
        interfaz:"gestion",
        grupos:[],
        fichas:[],
@@ -36,7 +41,7 @@ class App extends Component {
                         },
                         {
                           opcion:"far fa-calendar-alt", 
-                          funcion:"calendario"
+                          funcion:"agenda"
                         },
                         {
                           opcion:"fa fa-headset", 
@@ -55,16 +60,32 @@ class App extends Component {
                         {tag:"contacto", cantidad:0, ver: true, canales:[]},
                         {tag:"cotizaciones", cantidad:0, ver: true, canales:[]},
                         {
-                          tag:"seguimiento", 
+                          tag:"en gestion", 
                           cantidad:0, 
                           ver: true, 
                           canales:[
-                                    {tag:"web",cantidad:0, ver: true},
-                                    {tag:"telefonia",cantidad:0, ver: true}
+                                    { 
+                                      tag:"Seguimiento",cantidad:0, 
+                                      ver: true, 
+                                      tipificacion:[
+                                                      {
+                                                          tag:"sin respuesta", 
+                                                          cantidad:0, 
+                                                          ver:true
+                                                      },
+                                                      {
+                                                          tag:"en seguimiento", 
+                                                          cantidad:0, 
+                                                          ver:true
+                                                      }
+                                                    ]
+                                    },
+                                    {tag:"Agendado",cantidad:0, ver: true}
                                   ]
                         }
                       ],
-       procesomanualFiltro:[]
+       procesomanualFiltro:[],
+       searchFiltro:""
 
 
      }
@@ -77,7 +98,29 @@ class App extends Component {
     this.estadoProceso = this.estadoProceso.bind(this);
     this.filtroFichas = this.filtroFichas.bind(this)
     this.navegarInterfaz=this.navegarInterfaz.bind(this)
+    this.estadoAgenda=this.estadoAgenda.bind(this)
+    this.estadoTelefono=this.estadoTelefono.bind(this)
+    this.searchFiltro=this.searchFiltro.bind(this)
+    
 
+  }
+  searchFiltro(texto){
+
+    console.log(texto)
+    this.setState({searchFiltro:texto});
+
+  }
+
+  estadoTelefono(){
+    this.setState(state => ({
+      verTelefono: !state.verTelefono
+    }));
+  }
+
+  estadoAgenda(){
+    this.setState(state => ({
+      verAgenda: !state.verAgenda
+    }));
   }
 
   interfazExpandida() {
@@ -95,7 +138,7 @@ class App extends Component {
   }
 
   actualizarFichas(fichas, grupos, overlays) {
-   
+   //console.log(fichas)
     this.setState({fichas:fichas});
     this.setState({grupos: grupos});
     //this.setState({xmlOverlays: overlays});
@@ -107,6 +150,7 @@ class App extends Component {
 
         //RRECORRO EL PROCESO
         procesomanual.forEach(function(element_b, index_b) {
+            
             if(element_b.tag==element_a.estado_proceso){
                 procesomanual[index_b].cantidad=procesomanual[index_b].cantidad+1
             }
@@ -116,12 +160,33 @@ class App extends Component {
 
               //RRECORRO LOS CANALES
                element_b.canales.forEach(function(element_c, index_c) {
-                    console.log(  element_b.canales[index_c].tag+"/"+element_a.tipo_caso)
+                     
+                    //CUENTO CUANTOS EN ESE CANAL
+                     //console.log(  element_b.canales[index_c].tag+"/"+element_a.tipo_caso)
                      if( element_b.canales[index_c].tag == element_a.tipo_caso){
-                        console.log("SUMO")
-                        console.log(element_a.caso_ES)
+                        //console.log("SUMO")
+                        //console.log(element_a.caso_ES)
                           procesomanual[index_b].canales[index_c].cantidad=procesomanual[index_b].canales[index_c].cantidad+1
                       }
+
+                      //VERIFICO SI TIENE DEFINIDA TIPIFICACION
+                      
+                       if(element_c.tipificacion ){
+                        
+                          element_c.tipificacion.forEach(function(element_d, index_d) {
+
+                            if(element_d.tag==element_a.tipificacion){
+                                
+                                procesomanual[index_b].canales[index_c].tipificacion[index_d].cantidad++
+                               // element_d.cantidad++
+                            }
+
+                          })
+                       }
+
+
+
+
 
                })
             
@@ -131,13 +196,13 @@ class App extends Component {
         });
     })
     this.setState({procesomanual:procesomanual})
-    
+    //console.log(this.state.procesomanual)
 
     
   }
 
   actualizarOverlayXml(overlays) {
-    console.log(overlays)
+    //console.log(overlays)
     this.setState({xmlOverlays: [{"ID_ETAPA_PROCESO":"SCAN_OK", "NOTA":overlays, "ID_FICHA":overlays }]});
     
    // console.log(this.state.xmlOverlays)
@@ -145,25 +210,25 @@ class App extends Component {
 
   estadoProceso(en_esatdo){
 
-    console.log(en_esatdo)
+    //console.log(en_esatdo)
   }
 
 
   desplegarEdicion(datosFormulario, caso_ES) {
-    console.log(datosFormulario)
+    //console.log(datosFormulario)
     this.setState({edicion:[{"caso_ES": caso_ES, "datosFormulario":datosFormulario}]});
 
   }
 
 
   filtroFichas(filtro){
-    console.log(filtro)
+    //console.log(filtro)
 
     //procesomanualFiltro
     const filtro_actual=this.state.procesomanualFiltro
     const procesomanual=this.state.procesomanual
     //console.log(filtro_actual)
-    if(filtro_actual.indexOf(filtro)===-1){
+    if(filtro_actual.indexOf(filtro)==-1){
       //LLENO EL FILTRO
       filtro_actual.push(filtro)
       //ACTUALIZO EL RPOCESO
@@ -177,6 +242,17 @@ class App extends Component {
           if(element_b.tag==filtro){
             procesomanual[index].canales[index_b].ver=false
           }
+          //TERCER NIVEL
+          if(element_b.tipificacion){
+            element_b.tipificacion.forEach(function(element_c, index_c) {
+              if(element_c.tag==filtro){
+                procesomanual[index].canales[index_b].tipificacion[index_c].ver=false
+              }
+
+            })
+          }
+          
+
         })
 
 
@@ -195,12 +271,22 @@ class App extends Component {
           if(element_b.tag==filtro){
             procesomanual[index].canales[index_b].ver=true
           }
+          //TERCER NIVEL
+          if(element_b.tipificacion){
+            element_b.tipificacion.forEach(function(element_c, index_c) {
+              if(element_c.tag==filtro){
+                procesomanual[index].canales[index_b].tipificacion[index_c].ver=true
+              }
+
+            })
+          }
+
         })
       });
     }
     this.setState({procesomanualFiltro:filtro_actual})
     this.setState({procesomanual:procesomanual})
-    console.log(this.state.procesomanualFiltro)
+    //console.log(this.state.procesomanual)
     //if()
     //this.setState({edicion:{"caso_ES": caso_ES, "datosFormulario":datosFormulario}});
     
@@ -222,8 +308,15 @@ class App extends Component {
 
       console.log(this.state.verTelefono)
 
+    }else if(opcion=="agenda"){
+
+      this.setState(state => ({
+        verAgenda: !state.verAgenda
+      }));
+
+
     }else{
-      this.setState({interfaz:opcion})
+      //this.setState({interfaz:opcion})
 
     }
   }
@@ -233,18 +326,19 @@ class App extends Component {
 
    
     
-    if(this.state.estadoLogin===false){
+    if(this.state.estadoLogin==false){
 
       return (
             <Login tipoLogin={this.state.tipoLogin} estadoLogin={this.estadoLogin} actualizarFichas={this.actualizarFichas}/>
         );
-    }else if(this.state.estadoLogin===true &&  this.state.interfaz==="gestion"){
+    }else if(this.state.estadoLogin==true &&  this.state.interfaz=="gestion"){
       return (
 
         <div className="container-fluid h-100">
           
 
-          {this.state.verTelefono ==true && <Vertelefono />}
+          {this.state.verTelefono ==true && <Vertelefono estadoTelefono={this.estadoTelefono} />}
+          {this.state.verAgenda ==true && <Agenda  estadoAgenda={this.estadoAgenda}/>}
           
           <div className="row">
             <div className="col-12">
@@ -262,17 +356,14 @@ class App extends Component {
                 <div id="barra_lateral_fichas" className="col-2" style={{display: (this.state.expandida ? 'block' : 'none')}}>
                    
                    <div className="row h-25">
-                     <div id="search">
-                        <div className="col-auto">
-                          <div className="input-group mb-2">
-                            
-                            <input type="text" className="form-control"  placeholder="Buscar" />
-                            <div className="input-group-prepend">
-                              <div className="input-group-text"><i className="fas fa-search"></i></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+
+                    <Search  
+                          procesomanual={this.state.procesomanual} 
+                          filtroFichas={this.filtroFichas} 
+                          filtro={this.state.procesomanualFiltro}
+                          searchFiltro={this.searchFiltro}
+                    />
+                     
                    </div>
 
                    <div className="row h-75">
@@ -282,8 +373,11 @@ class App extends Component {
                             fichas={this.state.fichas} 
                             grupos={this.state.grupos} 
                             filtro={this.state.procesomanualFiltro}
+                            filtroFichas={this.filtroFichas}
+                            searchFiltro={this.state.searchFiltro}
                             actualizarOverlayXml={this.actualizarOverlayXml} 
                             desplegarEdicion={this.desplegarEdicion}
+                            procesomanual={this.state.procesomanual}
                         /> 
                       </div>
                     </div>
@@ -351,7 +445,7 @@ class App extends Component {
                       <div className="col-12 h-75" >
                         <div className="row h-100">
                           <div className="col-12 h-100">
-                                <AreaEdicion formulario={this.state.edicion}  />
+                                <AreaEdicion formulario={this.state.edicion} estadoAgenda={this.estadoAgenda}/> />
 
                           </div>
                           
@@ -362,7 +456,7 @@ class App extends Component {
             </div>
           </div>
         );
-    }else if(this.state.estadoLogin===true &&  this.state.interfaz==="reporte"){
+    }else if(this.state.estadoLogin==true &&  this.state.interfaz=="reporte"){
       return (
         <div className="container-fluid h-100">
           <div className="row">
@@ -381,27 +475,8 @@ class App extends Component {
                 
           </div>
         </div>
-        );
-    } else if(this.state.estadoLogin===true &&  this.state.interfaz==="calendario"){
-      return (
-        <div className="container-fluid h-100">
-          <div className="row">
-            <div className="col-12">
-                        <OpcioneDeNavegacion  
-                          opciones={this.state.opcionesOsuario} 
-                          interfazExpandida={this.interfazExpandida} 
-                          estado={this.state.expandida}
-                          navegarInterfaz={this.navegarInterfaz}
-                        />
-            </div>
-          </div>
-          <div id="contenedor_app" className="row h-100 ">
-                
-                
-          </div>
-        </div>
-        );
-    }
+      );
+    } 
   }
 }
 
