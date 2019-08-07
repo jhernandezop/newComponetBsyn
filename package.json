@@ -1,20 +1,20 @@
 {
-  "name": "electron_react",
+  "name": "bsync",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.19",
-    "@fortawesome/free-solid-svg-icons": "^5.9.0",
-    "@fortawesome/react-fontawesome": "^0.1.4",
-    "bpmn-js": "^4.0.3",
+    "bpmn-js": "^4.0.4",
     "d3": "^5.9.7",
-    "font-awesome": "^4.7.0",
+    "electron-packager": "^14.0.4",
+    "moment": "^2.24.0",
     "react": "^16.8.6",
+    "react-big-calendar": "^0.22.0",
     "react-dom": "^16.8.6",
-    "react-formio": "^4.0.0-rc.10",
-    "react-scripts": "3.0.1"
+    "react-draggable": "^3.3.0",
+    "react-formio": "^3.1.12",
+    "react-scripts": "3.0.1",
+    "react-tackle-box": "^2.1.0"
   },
-  "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -35,10 +35,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.9.0",
-    "electron": "^5.0.2",
-    "electron-packager": "^13.1.1"
   }
 }
