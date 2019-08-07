@@ -18,7 +18,7 @@ class ProcesoManual extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps)
+    //console.log(nextProps)
   }
 
   
@@ -81,7 +81,7 @@ class Canales extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps)
+   // console.log(nextProps)
   }
 
   retornariconos(tipo){
@@ -101,7 +101,7 @@ class Canales extends Component {
     render(){
 
         const proceso = this.props.canales;
-        console.log(proceso)
+        //console.log(proceso)
 
 
         const elementos_proceso = proceso.map((number) => (number.ver==true) ?
@@ -121,12 +121,13 @@ class Canales extends Component {
                 
         );
 
-
-        return ( <div className="marcadores">
+        /*<div className="marcadores">
                     <div>
                       {elementos_proceso}
                     </div>
-                  </div>);
+                  </div>*/
+
+        return ( <span></span> );
     }
 }
 

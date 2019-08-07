@@ -7,28 +7,27 @@ import './ficha.css';
 
 class ConstruirFichas extends Component {
   //
-
-  omponentDidMount() {
-    this.componentWillReceiveProps();
+  
+  componentDidMount(nextProps) {
+    this.componentWillReceiveProps(nextProps);
   }
 
   componentWillReceiveProps(nextProps){
     console.log(nextProps)
   }
 
+  
+
 
   
     render(){
       const grupos = this.props.grupos;
       const fichas = this.props.fichas;
+      //FILTROS
+     
 
-      const grupo_pestnias = grupos.map((number) =>
-          <div key={number}> </div>
-            /*<li key={number}  className="nav-item"  role='presentation'  >
-              <a className="nav-link" id={number+"-tab"} data-toggle="tab" href={"#"+number} role="tab" aria-controls={number} aria-selected="true" >{number}</a>
-            </li>*/
-
-      );
+      //GRUPOS 
+      
 
       const grupo_fichas = fichas.map((number) =>
             
@@ -37,6 +36,7 @@ class ConstruirFichas extends Component {
                   datosFicha={number} 
                   filtro={this.props.filtro}
                   desplegarEdicion={this.props.desplegarEdicion}
+                  searchFiltro={this.props.searchFiltro}
                 />
               
             
@@ -52,11 +52,6 @@ class ConstruirFichas extends Component {
       
       return ( 
           <div id="divFichas" className='row'>
-
-           
-              
-             
-            
             <div id="lista_fichas" className="col-sm-12 col-md-12 col-lg-12 accordion h-75"  >
               
                 {grupo_fichas}
@@ -79,7 +74,8 @@ class UnaFicha extends Component {
           estado_proceso: this.props.datosFicha.estado_proceso,
           nro_gestion: this.props.datosFicha.nro_gestion,
           timeline: this.props.datosFicha.timeline,
-          tipo_caso:this.props.datosFicha.tipo_caso
+          tipo_caso:this.props.datosFicha.tipo_caso,
+          tipificacion:this.props.datosFicha.tipificacion
     }
 
 
@@ -88,13 +84,13 @@ class UnaFicha extends Component {
   
 
   llamarFormulario= (event) => {
-      console.log(this.state.caso_ES)
+      //console.log(this.state.caso_ES)
       this.props.desplegarEdicion(["1"], this.state.caso_ES);
 
   }
 
   llamarCliente(numero) {
-      console.log(numero)
+      //console.log(numero)
 
     fetch("http://172.27.86.16:3000/bsync/face/call", {
         "method": "POST",
@@ -119,6 +115,23 @@ class UnaFicha extends Component {
 
   }
 
+  filtrarFicha(ficha){
+
+    if(this.props.searchFiltro==""){ 
+      return true;
+    }else{
+      for (const prop in ficha) {
+        if(typeof (ficha[prop])=="string"){
+            const dimension = this.props.searchFiltro.length
+            if(ficha[prop].slice(0, dimension)==this.props.searchFiltro){
+              return true;
+            }
+        }
+      }
+    }
+   return false
+  }
+
   render(){
 
     const indicador=this.state.datos_ficha.calldate.split("T", 2)
@@ -129,12 +142,14 @@ class UnaFicha extends Component {
     const filtro= this.props.filtro
 
     const tipo_caso=this.state.tipo_caso
+    const tipificacion=this.state.tipificacion
+
     
-    console.log(filtro.indexOf(tipo_caso))
+    //console.log(filtro.indexOf(tipo_caso))
     //console.log(estado_proceso)
     //console.log(filtro.indexOf(estado_proceso))
     
-    if(filtro.indexOf(estado_proceso)==-1 && filtro.indexOf(tipo_caso)==-1){
+    if(filtro.indexOf(estado_proceso)==-1 && filtro.indexOf(tipo_caso)==-1 && filtro.indexOf(this.state.tipificacion)==-1 && this.filtrarFicha(this.props.datosFicha)==true){
       return ( <div className="card ficha"  onDoubleClick = {this.llamarFormulario}>
              <div className="card-header" id="headingOne">
                 <h2 className="mb-0">

@@ -10,7 +10,8 @@ class Vertelefono extends Component {
     constructor(props){
         super(props);
         this.state = {
-          numero:""
+          numero:"",
+          expandida:true
         }
         
       }
@@ -54,7 +55,20 @@ class Vertelefono extends Component {
 
       }
 
-   
+   minimizar(){
+
+        this.setState(state => ({
+            expandida: !state.expandida
+        }));
+    }
+
+    maximizar(){
+        
+        this.setState(state => ({
+            expandida: !state.expandida
+        }));
+        
+    }
 
   render() {
 
@@ -66,38 +80,41 @@ class Vertelefono extends Component {
                   
                 <div id="vertelefono">
                     <div className="controlador">
+                        <span className="indicador">Teléfono</span>
                         <div class="btn-group btn-group-sm" role="group" >
-                            <button type="button" class="btn btn-light"><i class="fas fa-window-minimize"></i></button>
-                            <button type="button" class="btn btn-light"><i class="far fa-window-maximize"></i></button>
-                            <button type="button" class="btn btn-light"><i class="fas fa-times"></i></button>
+                            <button type="button" class="btn btn-light" onClick={() => this.minimizar()}><i class="fas fa-window-minimize"></i></button>
+                            <button type="button" class="btn btn-light" onClick={() => this.maximizar()}><i class="far fa-window-maximize"></i></button>
+                            <button type="button" class="btn btn-light" onClick={() => this.props.estadoTelefono()}><i class="fas fa-times"></i></button>
                         </div>
                     </div>
-                    <div>
-                        <input className="numero" type="text" value={telefono}   />
-                    </div>
-                    <div>
-                        <div className="tecla" onClick={() => this.numero('1')}>1</div>
-                        <div className="tecla" onClick={() => this.numero('2')}>2</div>
-                        <div className="tecla" onClick={() => this.numero('3')}>3</div>
-                    </div>
-                    <div>
-                        <div className="tecla" onClick={() => this.numero('4')}>4</div>
-                        <div className="tecla" onClick={() => this.numero('5')}>5</div>
-                        <div className="tecla" onClick={() => this.numero('6')}>6</div>
-                    </div>
-                    <div>
-                        <div className="tecla" onClick={() => this.numero('7')}>7</div>
-                        <div className="tecla" onClick={() => this.numero('8')}>8</div>
-                        <div className="tecla" onClick={() => this.numero('9')}>9</div>
-                    </div>
-                    <div>
-                        <div className="tecla" onClick={() => this.numero('*')}>*</div>
-                        <div className="tecla" onClick={() => this.numero('0')}>0</div>
-                        <div className="tecla" onClick={() => this.numero('#')}>#</div>
-                    </div>
-                    <div>
-                        <div className="marcar" onClick={() => this.llamarCliente()}>LLAMAR</div>
-                        <div className="borrar" onClick={() => this.numero("borrar")}><i class="fas fa-times"></i></div>
+                    <div className={this.state.expandida ? '' : 'minimizada'}>
+                        <div>
+                            <input className="numero" type="text" value={telefono}   />
+                        </div>
+                        <div>
+                            <div className="tecla" onClick={() => this.numero('1')}>1</div>
+                            <div className="tecla" onClick={() => this.numero('2')}>2</div>
+                            <div className="tecla" onClick={() => this.numero('3')}>3</div>
+                        </div>
+                        <div>
+                            <div className="tecla" onClick={() => this.numero('4')}>4</div>
+                            <div className="tecla" onClick={() => this.numero('5')}>5</div>
+                            <div className="tecla" onClick={() => this.numero('6')}>6</div>
+                        </div>
+                        <div>
+                            <div className="tecla" onClick={() => this.numero('7')}>7</div>
+                            <div className="tecla" onClick={() => this.numero('8')}>8</div>
+                            <div className="tecla" onClick={() => this.numero('9')}>9</div>
+                        </div>
+                        <div>
+                            <div className="tecla" onClick={() => this.numero('*')}>*</div>
+                            <div className="tecla" onClick={() => this.numero('0')}>0</div>
+                            <div className="tecla" onClick={() => this.numero('#')}>#</div>
+                        </div>
+                        <div>
+                            <div className="marcar" onClick={() => this.llamarCliente()}>LLAMAR</div>
+                            <div className="borrar" onClick={() => this.numero("borrar")}><i class="fas fa-times"></i></div>
+                        </div>
                     </div>
                 </div>
             </Draggable>

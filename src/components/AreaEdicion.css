@@ -58,7 +58,33 @@ background-color: #FFF;
 	padding-left: 5px;
 }
 
-.formio-component > .card{
+.formio-component > .tab-content{
+    background-color: #FFF;
+    margin-bottom: 20px;
+    padding: 20px;
+    margin-left: 5px;
 	box-shadow: -5px 16px 14px 0px rgba(0, 0, 0, 0.2);
 
+}
+
+
+/*OTRO TIPO D EFORMULARIO*/
+.formio-form legend{
+    background-color: #FFF;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.formio-form fieldset{
+    background-color: #FFF;
+    margin-bottom: 20px;
+    box-shadow: -5px 16px 14px 0px rgba(0, 0, 0, 0.2);
+}
+
+.formio-form .btn-default{
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }

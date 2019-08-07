@@ -3,9 +3,51 @@ import './login.css';
 
 class Login extends Component {
 
-
+/*fetch("https://bscore.openpartner.cl/gdm", {
+  "method": "POST",
+  "headers": {
+    "content-type": "application/json",
+    "version": "0.3"
+  },
+  "body": {
+    "tx": "getTs",
+    "ts_o": "2019-08-06T18:25:49",
+    "tx_user": "3099",
+    "origen": "",
+    "columnas": ""
+  }
+})
+.then(response => {
+  console.log(response);
+})
+.catch(err => {
+  console.log(err);
+});*/
 
   login= ()=> {
+/*
+fetch("https://bscore.openpartner.cl/gdm", {
+  "method": "POST",
+  "headers": {
+    "content-type": "text/plain",
+    "version": "0.3"
+  },
+  "body": {
+    "tx": "getTs",
+    "ts_o": "2019-08-06T18:25:49",
+    "tx_user": "3099",
+    "origen": "",
+    "columnas": ""
+  }
+})
+.then(response => {
+  console.log(response);
+})
+.catch(err => {
+  console.log(err);
+});
+*/
+
     var url = 'http://172.27.86.16:3000/bsync/face/getCasos';
     var data = {
                  "usuario":"eancan"
@@ -27,6 +69,14 @@ class Login extends Component {
                       //[{"ID_ETAPA_PROCESO":"SCAN_OK", "NOTA":"AQUI HAY 2 FICHAS" },{"ID_ETAPA_PROCESO":"sid-D7F237E8-56D0-4283-A3CE-4F0EFE446138", "NOTA":"AQUI HAY 1 FICHAS" }]
                       response.casos.forEach(function(element) {
                         //console.log(element);
+
+                        //DATOS DURO 
+                       
+                        element.estado_proceso="en gestion";
+                        element.tipo_caso="Seguimiento"
+                        element["tipificacion"]="sin respuesta";
+
+                        
                         if(agrupaciones.indexOf(element.estado_proceso)<0){
                                 agrupaciones.push(element.estado_proceso)
                                 overlays.push({"ID_ETAPA_PROCESO":element.estado_proceso, "NOTA":1 })
@@ -36,9 +86,12 @@ class Login extends Component {
                         }
 
                       }); 
-                      //console.log(overlays)
+
+                      response.casos[2].tipificacion="en seguimiento"
+                       response.casos[4].tipificacion="en seguimiento"
+                      //console.log(response.casos)
                       this.props.actualizarFichas(response.casos, agrupaciones, "")
-                      console.log("PASSSSSSS")
+                      //console.log("PASSSSSSS")
                       this.props.estadoLogin()
 
                     }})
