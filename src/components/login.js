@@ -25,79 +25,53 @@ class Login extends Component {
 });*/
 
   login= ()=> {
-/*
-fetch("https://bscore.openpartner.cl/gdm", {
-  "method": "POST",
-  "headers": {
-    "content-type": "text/plain",
-    "version": "0.3"
-  },
-  "body": {
-    "tx": "getTs",
-    "ts_o": "2019-08-06T18:25:49",
-    "tx_user": "3099",
-    "origen": "",
-    "columnas": ""
-  }
-})
-.then(response => {
-  console.log(response);
-})
-.catch(err => {
-  console.log(err);
-});
-*/
 
-    var url = 'http://172.27.86.16:3000/bsync/face/getCasos';
-    var data = {
-                 "usuario":"eancan"
-                };
-    fetch(url, {
-      method: 'POST', 
-      body: JSON.stringify(data), 
-      headers:{
-      'Content-Type': 'text/plain'
-      }
-    })
-    .then(res => res.json())
-    .then(response => {if(response){
-                    //console.log(response.casos);
-                      
-                     
-                      const agrupaciones = []
-                      const overlays = []
-                      //[{"ID_ETAPA_PROCESO":"SCAN_OK", "NOTA":"AQUI HAY 2 FICHAS" },{"ID_ETAPA_PROCESO":"sid-D7F237E8-56D0-4283-A3CE-4F0EFE446138", "NOTA":"AQUI HAY 1 FICHAS" }]
-                      response.casos.forEach(function(element) {
-                        //console.log(element);
-
-                        //DATOS DURO 
-                       
-                        element.estado_proceso="en gestion";
-                        element.tipo_caso="Seguimiento"
-                        element["tipificacion"]="sin respuesta";
-
-                        
-                        if(agrupaciones.indexOf(element.estado_proceso)<0){
-                                agrupaciones.push(element.estado_proceso)
-                                overlays.push({"ID_ETAPA_PROCESO":element.estado_proceso, "NOTA":1 })
-                        }else{
-                            overlays[agrupaciones.indexOf(element.estado_proceso)].NOTA=overlays[agrupaciones.indexOf(element.estado_proceso)].NOTA+1
-                              //console.log(agrupaciones.indexOf(element.estado_proceso))
-                        }
-
-                      }); 
-
-                      response.casos[2].tipificacion="en seguimiento"
-                       response.casos[4].tipificacion="en seguimiento"
-                      //console.log(response.casos)
-                      this.props.actualizarFichas(response.casos, agrupaciones, "")
-                      //console.log("PASSSSSSS")
-                      this.props.estadoLogin()
-
-                    }})
-    .catch(error => console.error('Error:', error));
     
-    
+    const usuario=document.getElementById("id_pass").value
+    const clave=document.getElementById("pass").value
+    //return false;
+
+    fetch("https://bsadmin.openpartner.cl/", {
+          "method": "POST",
+          "headers": {
+            "content-type": "text/plain"
+          },
+          "body":  JSON.stringify({
+            "tx": "BS0",
+            "query": {
+              "query": {
+                "bool": {
+                  "must": [
+                    {
+                      "term": {
+                        "usuario": usuario
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          })
+        })
+      .then(res => res.json())
+        .then(response => {
+          //console.log(response);
+          //console.log(response.data[4].contraseña+"/"+clave)
+          if(response.estatus=="OK"){
+
+            if(response.data[4].contraseña==clave && response.data[4].usuario==usuario && response.data[4].anexo!=""){
+              this.props.estadoLogin(response.data[4])
+            }else{
+              //alert("invalido")
+               document.getElementById("msj").innerHTML="Datos invalidos";
+              
+            }
+
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
   
   }
 
@@ -109,8 +83,8 @@ fetch("https://bscore.openpartner.cl/gdm", {
                 <form name="login">
                   <span id="div_login">
                     <div>Inicio de Sesión</div>
-                    <input id="id_pass" name="id_pass"  className="form-control form-control-lg" type="text" placeholder="Usuario" />
-                    <input id="pass" name="pass" className="form-control form-control-lg" type="password" placeholder="Password" />
+                    <input id="id_pass" name="id_pass"  className="form-control form-control-lg" type="text" placeholder="Usuario" value="acuevas" />
+                    <input id="pass" name="pass" className="form-control form-control-lg" type="password" placeholder="Password" value="Cacuevas" />
                     <div id="msj" className=""></div>
                     <button type="button" id="login" className="btn btn-success btn-lg btn-block confirma_intencion"  onClick={this.login}>LOGIN</button>
                     <div className="ir_recuperar">¿Olvidaste tu clave?</div>

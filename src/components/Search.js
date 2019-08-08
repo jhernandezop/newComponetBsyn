@@ -16,7 +16,7 @@ class Search extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps)
+    //console.log(nextProps)
     this.actualizarSubFiltros(nextProps)
   }
 

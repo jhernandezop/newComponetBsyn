@@ -9,11 +9,12 @@ class ConstruirFichas extends Component {
   //
   
   componentDidMount(nextProps) {
+    //console.log(nextProps)
     this.componentWillReceiveProps(nextProps);
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps)
+    //console.log(nextProps)
   }
 
   
@@ -32,7 +33,7 @@ class ConstruirFichas extends Component {
       const grupo_fichas = fichas.map((number) =>
             
                 <UnaFicha 
-                  key={number.caso_ES} 
+                  key={number.caso} 
                   datosFicha={number} 
                   filtro={this.props.filtro}
                   desplegarEdicion={this.props.desplegarEdicion}
@@ -68,13 +69,13 @@ class UnaFicha extends Component {
     super(props);
     this.state = {  
           acciones: this.props.datosFicha.acciones,
-          caso_CAM: this.props.datosFicha.caso_CAM,
-          caso_ES: this.props.datosFicha.caso_ES,
+          caso_CAM: this.props.datosFicha.casoCAM,
+          caso_ES: this.props.datosFicha.caso,
           datos_ficha: this.props.datosFicha.datos_ficha,
-          estado_proceso: this.props.datosFicha.estado_proceso,
+          estado_proceso: this.props.datosFicha.estado,
           nro_gestion: this.props.datosFicha.nro_gestion,
           timeline: this.props.datosFicha.timeline,
-          tipo_caso:this.props.datosFicha.tipo_caso,
+          tipo_caso:this.props.datosFicha.tipo,
           tipificacion:this.props.datosFicha.tipificacion
     }
 
@@ -84,8 +85,49 @@ class UnaFicha extends Component {
   
 
   llamarFormulario= (event) => {
-      //console.log(this.state.caso_ES)
-      this.props.desplegarEdicion(["1"], this.state.caso_ES);
+      //console.log(this.state)
+       //console.log(this.state.estado_proceso)
+      
+ 
+      if(this.state.estado_proceso=="contacto"){
+         this.props.desplegarEdicion(["1"], this.state.caso_ES);
+      }else{
+
+          var url = 'https://bscore.openpartner.cl/';
+          var data = {
+                      "tx": "doc0",
+                      "ts_o": "2019-08-07T17:30:58",
+                      "tx_user": "",
+                      "origen": "face",
+                      "caso": {
+                        "user": "3099",
+                        "tipo": "",
+                        "S2_id": "1565191644097",
+                        "C_T_id": "b808421c-b928-11e9-8ea2-0af90a69b8d6",
+                        "campania": "",
+                        "estado": ""
+                      }
+                    };
+            fetch(url, {
+              method: 'POST', 
+              body: JSON.stringify(data), 
+              headers:{
+              'Content-Type': 'text/plain'
+              }
+            })
+            .then(res => res.json())
+            .then(response => {if(response){
+                            console.log(response);
+                              this.props.desplegarEdicion(response.data, this.state.caso_ES);
+                              
+
+                            }})
+            .catch(error => console.error('Error:', error));
+
+
+
+      }
+
 
   }
 
@@ -134,7 +176,7 @@ class UnaFicha extends Component {
 
   render(){
 
-    const indicador=this.state.datos_ficha.calldate.split("T", 2)
+    const indicador=this.state.datos_ficha.fecha_co.split("T", 2)
 
     const detalle = this.state.datos_ficha
 
@@ -155,6 +197,7 @@ class UnaFicha extends Component {
                 <h2 className="mb-0">
                   <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#collapseOne_"+this.state.caso_ES.replace(".","")} aria-expanded="false" aria-controls={"collapseOne_"+this.state.caso_ES.replace(".","")}>
                     <div className="row">
+                      <div className="col-12 cotizacion"><i className="far fa-hand-paper"></i> {detalle.cotizacion}</div>
                       <div className="col-12"><i className="far fa-calendar-alt"></i> {indicador[0]}</div>
                       <div className="col-12"><i className="far fa-clock"></i> {indicador[1].replace(".000Z","")}</div>
                     </div>
@@ -167,17 +210,17 @@ class UnaFicha extends Component {
                 <div className="card-body detalle">
                   
                   <div className="row">
-                      <div className="col-12">{detalle.disposition}</div>
-                      <div className="col-12">{detalle.dst}</div>
-                      <div className="col-12">{detalle.src}</div>
-                      <div className="col-12">{detalle.uniqueid}</div>
+                      <div className="col-12">{detalle.nombre}</div>
+                      <div className="col-12">{detalle.rut}</div>
+                      <div className="col-12">{detalle.correo}</div>
+                      <div className="col-12">{detalle.sucursal}</div>
                     </div>
 
                 </div>
               </div>
               <div className="card-body telefono">
-                <button type="button" onClick={() => this.llamarCliente(this.state.datos_ficha.src)} className="btn btn-light">
-                    <i className="fas fa-headset"></i> {this.state.datos_ficha.src}
+                <button type="button" onClick={() => this.llamarCliente(this.state.datos_ficha.telefono)} className="btn btn-light">
+                    <i className="fas fa-headset"></i> {this.state.datos_ficha.telefono}
                     <span className="nro_gestion badge badge-pill badge-light">{this.state.nro_gestion}</span>
                 </button>
 

@@ -105,7 +105,7 @@ class Agenda extends Component {
 
 	onSelectEvent(pEvent) {
 	   const r = window.confirm("Seguro que desea eliminar el agendamiento?")
-	   if(r === true){
+	   if(r == true){
 	     
 	     this.setState((prevState, props) => {
 	       const events = [...prevState.events]
@@ -162,8 +162,8 @@ class Agenda extends Component {
 		      	<div className="controlador">
 		      			<span className="indicador">Agenda</span>
                         <div className="btn-group btn-group-sm" role="group" >
-                            <button type="button" className="btn btn-light" onClick={() => this.minimizar()}><i class="fas fa-window-minimize"></i></button>
-                            <button type="button" className="btn btn-light" onClick={() => this.maximizar()}><i class="far fa-window-maximize"></i></button>
+                            <button type="button" className="btn btn-light" onClick={() => this.minimizar()}><i className="fas fa-window-minimize"></i></button>
+                            <button type="button" className="btn btn-light" onClick={() => this.maximizar()}><i className="far fa-window-maximize"></i></button>
                             <button type="button" className="btn btn-light" onClick={() => this.props.estadoAgenda()}><i class="fas fa-times"></i></button>
                         </div>
                 </div>

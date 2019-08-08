@@ -24,6 +24,52 @@ class AreaEdicion extends Component {
       this.setState({caso_ES:nuevoFormulario.formulario.caso_ES});
       this.setState({expandida:true});
       this.setState({formulario:"detalleLLamada"});
+      
+      const f=nuevoFormulario.formulario[0].datosFormulario
+      console.log(f.nu_documento)
+      console.log(detalleLLamada)
+      //PESTAÑA INFO CLIENTE = detalleLLamada.components[0].components[0]
+      detalleLLamada.components[0].components[0].components[0].columns[0].components[0].defaultValue=f.nu_documento
+      detalleLLamada.components[0].components[0].components[0].columns[0].components[1].defaultValue=f.nombre+" "+f.Ap_paterno+" "+f.Ap_materno
+      detalleLLamada.components[0].components[0].components[0].columns[0].components[2].defaultValue=f.nu_telefono
+
+      detalleLLamada.components[0].components[0].components[0].columns[1].components[0].defaultValue=f.nucotizacion
+      detalleLLamada.components[0].components[0].components[0].columns[1].components[1].defaultValue=f.version
+      detalleLLamada.components[0].components[0].components[0].columns[1].components[2].defaultValue=f.lugaratencion
+
+      detalleLLamada.components[0].components[0].components[1].columns[0].components[0].defaultValue=f.no_correo
+      detalleLLamada.components[0].components[0].components[1].columns[1].components[0].defaultValue=f.co_comuna
+      detalleLLamada.components[0].components[0].components[1].columns[2].components[0].defaultValue=f.no_direccion
+      //PESTAÑA INFORMACION COMPLEMENTARIA = detalleLLamada.components[0].components[1] 
+      //VEHICULO EN PARTE DE PAGO
+      detalleLLamada.components[0].components[1].components[0].components[0].columns[0].components[0].defaultValue=f.Retoma_no_patente
+      detalleLLamada.components[0].components[1].components[0].components[0].columns[0].components[1].defaultValue=f.Retoma_no_version
+      detalleLLamada.components[0].components[1].components[0].components[0].columns[1].components[0].defaultValue=f.Retoma_no_modelo
+      detalleLLamada.components[0].components[1].components[0].components[0].columns[1].components[1].defaultValue=f.Retoma_nu_anio
+      detalleLLamada.components[0].components[1].components[0].components[0].columns[2].components[0].defaultValue=f.Retoma_no_marca
+      detalleLLamada.components[0].components[1].components[0].components[0].columns[2].components[1].defaultValue=f.Retoma_ValorRetoma
+      //CREDITO
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[0].components[0].defaultValue=f.Credito_Tipo
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[0].components[1].defaultValue=f.Credito_TotalaFinanciar
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[0].components[2].defaultValue=f.Credito_Saldo
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[1].components[0].defaultValue=f.Credito_MontoPie
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[1].components[1].defaultValue=f.Credito_ValorCuota
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[1].components[2].defaultValue=f.Credito_CAE
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[2].components[0].defaultValue=f.Credito_Cuotas
+      detalleLLamada.components[0].components[1].components[1].components[0].columns[2].components[1].defaultValue=f.Credito_CostoTotal
+      //SEURO
+      detalleLLamada.components[0].components[1].components[2].components[0].columns[0].components[0].defaultValue=f.Seguro_Deducible
+      detalleLLamada.components[0].components[1].components[2].components[0].columns[1].components[0].defaultValue=f.Seguro_PrimaAnual
+      detalleLLamada.components[0].components[1].components[2].components[0].columns[2].components[0].defaultValue=f.Seguro_PrimaMensual
+      //PESTAÑA HISTORICO = detalleLLamada.components[0].components[2] 
+      //VEHICULO EN PARTE DE PAGO
+      /*detalleLLamada.components[0].components[2].components[0].components[0].columns[0].components[0].defaultValue=f.nucotizacion
+      detalleLLamada.components[0].components[2].components[0].components[0].columns[0].components[1].defaultValue=f.Retoma_no_version
+      detalleLLamada.components[0].components[2].components[0].components[0].columns[1].components[0].defaultValue=f.Retoma_no_modelo
+      detalleLLamada.components[0].components[2].components[0].components[0].columns[1].components[1].defaultValue=f.Retoma_nu_anio
+      detalleLLamada.components[0].components[2].components[0].components[0].columns[2].components[0].defaultValue=f.Retoma_no_marca
+      detalleLLamada.components[0].components[2].components[0].components[0].columns[2].components[1].defaultValue=f.Retoma_ValorRetoma*/
+
 
   }
 
@@ -3504,7 +3550,7 @@ const detalleLLamada={
         },
         {
             "type": "button",
-            "label": "Submit",
+            "label": "Actualizar",
             "key": "submit",
             "disableOnInvalid": true,
             "theme": "primary",
@@ -3562,24 +3608,28 @@ const seguimiento= {
                     "data": {
                         "values": [
                             {
-                                "label": "Sin Interes",
-                                "value": "sinInteres"
-                            },
-                            {
-                                "label": "Con agendamiento",
-                                "value": "conAgendamiento"
-                            },
-                            {
                                 "label": "En seguimiento",
-                                "value": "enSeguimiento"
+                                "value": "en_seguimiento"
                             },
                             {
-                                "label": "Sin respuesta",
-                                "value": "sinRespuesta"
+                                "label": "Sin interés",
+                                "value": "sin_interes"
+                            },
+                            {
+                                "label": "Agendamiento propio",
+                                "value": "agendamiento_propio"
+                            },
+                            {
+                                "label": "Agendamiento a tercero",
+                                "value": "agendamiento_tercero"
                             },
                             {
                                 "label": "Datos erróneos",
-                                "value": "datosErroneos"
+                                "value": "datos_erroneos"
+                            },
+                            {
+                                "label": "Sin respuesta",
+                                "value": "sin_respuesta"
                             }
                         ]
                     },
@@ -3590,12 +3640,12 @@ const seguimiento= {
                     "customConditional": "",
                     "logic": [],
                     "attributes": {},
+                    "reorder": false,
                     "lazyLoad": false,
                     "selectValues": "",
                     "disableLimit": false,
                     "sort": "",
-                    "reference": false,
-                    "reorder": false
+                    "reference": false
                 },
                 {
                     "label": "Comentarios",
@@ -3634,47 +3684,6 @@ const seguimiento= {
                     "columns": [
                         {
                             "components": [
-                                {
-                                    "label": "Sucursal",
-                                    "mask": false,
-                                    "tableView": true,
-                                    "alwaysEnabled": false,
-                                    "type": "select",
-                                    "input": true,
-                                    "key": "sucursal",
-                                    "defaultValue": "",
-                                    "validate": {
-                                        "select": false,
-                                        "customMessage": "",
-                                        "json": ""
-                                    },
-                                    "conditional": {
-                                        "show": "",
-                                        "when": "",
-                                        "json": ""
-                                    },
-                                    "data": {
-                                        "values": [
-                                            {
-                                                "label": "",
-                                                "value": ""
-                                            }
-                                        ]
-                                    },
-                                    "valueProperty": "value",
-                                    "selectThreshold": 0.3,
-                                    "encrypted": false,
-                                    "reorder": false,
-                                    "lazyLoad": false,
-                                    "selectValues": "",
-                                    "disableLimit": false,
-                                    "sort": "",
-                                    "reference": false,
-                                    "properties": {},
-                                    "customConditional": "",
-                                    "logic": [],
-                                    "attributes": {}
-                                },
                                 {
                                     "label": "Ejecutivo de Piso",
                                     "mask": false,
@@ -3858,14 +3867,14 @@ const seguimiento= {
                     "conditional": {
                         "show": "true",
                         "when": "select",
-                        "eq": "conAgendamiento",
+                        "eq": "agendamiento_tercero",
                         "json": ""
                     },
                     "properties": {},
                     "customConditional": "",
-                    "reorder": false,
                     "logic": [],
-                    "attributes": {}
+                    "attributes": {},
+                    "reorder": false
                 }
             ],
             "reorder": false,
@@ -3913,7 +3922,6 @@ const seguimiento= {
             "src": "https://files.form.io/pdf/5692b91fd1028f01000407e3/file/1ec0f8ee-6685-5d98-a847-26f67b67d6f0"
         }
     }
-
 }
 
 const tipificacion= {
