@@ -26,6 +26,8 @@ class App extends Component {
        tipoLogin:"standar",
        verTelefono: false,
        verAgenda:false,
+       anexo:"",
+       ejecutivos:[],
        interfaz:"gestion",
        grupos:[],
        fichas:[],
@@ -59,13 +61,14 @@ class App extends Component {
        procesomanual:[
                         {tag:"contacto", cantidad:0, ver: true, canales:[]},
                         {tag:"cotizaciones", cantidad:0, ver: true, canales:[]},
-                        {
+                        {tag:"en gestion", cantidad:0, ver: true, canales:[]},
+                        /*{
                           tag:"en gestion", 
                           cantidad:0, 
                           ver: true, 
                           canales:[
                                     { 
-                                      tag:"Seguimiento",cantidad:0, 
+                                      tag:"seguimiento",cantidad:0, 
                                       ver: true, 
                                       tipificacion:[
                                                       {
@@ -80,9 +83,10 @@ class App extends Component {
                                                       }
                                                     ]
                                     },
-                                    {tag:"Agendado",cantidad:0, ver: true}
+                                    {tag:"agendado",cantidad:0, ver: true},
+                                    {tag:"sin respuesta",cantidad:0, ver: true}
                                   ]
-                        }
+                        }*/
                       ],
        procesomanualFiltro:[],
        searchFiltro:""
@@ -104,9 +108,122 @@ class App extends Component {
     
 
   }
+
+  pedirFichas(){
+
+    //console.log(this.state.anexo)
+
+    var url = 'https://bscore.openpartner.cl/gdm%22,%7B';
+    var data = {
+                  "tx"      : "getTs",
+                  "ts_o"    : "{{ ts_str }}",
+                  "tx_user"   : "3099",
+                  "origen"    : "pruebas EFRAIN",
+                  "columnas"  : ""
+              };
+    fetch(url, {
+      method: 'POST', 
+      body: JSON.stringify(data),
+      "mime.type":"application/json; charset=utf8",  
+      headers:{
+      'Content-Type': 'text/plain'
+      }
+    })
+    .then(res => res.json())
+    .then(response => {if(response){
+                    //console.log(response.casos);
+                     const agrupaciones = []  
+                    if(response.estatus=="OK"){
+                     
+                     
+                      //const overlays = []
+                      //[{"ID_ETAPA_PROCESO":"SCAN_OK", "NOTA":"AQUI HAY 2 FICHAS" },{"ID_ETAPA_PROCESO":"sid-D7F237E8-56D0-4283-A3CE-4F0EFE446138", "NOTA":"AQUI HAY 1 FICHAS" }]
+                      response.casos.forEach(function(element) {
+                        //console.log(element);
+
+                        //PARSEO DE DATOS 
+                        if(element.estado=="nuevo"){
+                          element.estado="cotizaciones";
+                        }else if(element.estado=="en_gestion"){
+                          element.estado="en gestion";
+                        }
+                        
+                        //element.tipo_caso="Seguimiento"
+                        //element["tipificacion"]="sin respuesta";
+
+                        
+                        if(agrupaciones.indexOf(element.estado_proceso)<0){
+                                agrupaciones.push(element.estado_proceso)
+                                //overlays.push({"ID_ETAPA_PROCESO":element.estado_proceso, "NOTA":1 })
+                        }else{
+                            //overlays[agrupaciones.indexOf(element.estado_proceso)].NOTA=overlays[agrupaciones.indexOf(element.estado_proceso)].NOTA+1
+                              //console.log(agrupaciones.indexOf(element.estado_proceso))
+                        }
+
+                      }); 
+
+                       //response.casos[2].estado_proceso="contacto";
+                       //response.casos[2].tipificacion="en seguimiento"
+                       //response.casos[4].tipificacion="en seguimiento"
+                      //console.log(response.casos)
+                      this.actualizarFichas(response.casos, agrupaciones, "")
+                      //console.log("PASSSSSSS")
+                      
+                    }else{
+
+                      this.actualizarFichas([], agrupaciones, "")
+                      //console.log("PASSSSSSS")
+                      
+
+                    }
+
+                    }})
+    .catch(error => console.error('Error:', error));
+    
+    
+
+  }
+
+  pedirEjecutivos(){
+
+
+    //console.log(this.state.anexo)
+
+    var url = 'https://bscore.openpartner.cl/gdm%22,%7B';
+    var data = {
+                  "tx"      : "getEP",
+                  "tx_user"   : "3099",
+                  "tx_version": "0.3",
+                  "destino"   : "test"
+              };
+    fetch(url, {
+      method: 'POST', 
+      body: JSON.stringify(data),
+      "mime.type":"application/json; charset=utf8",  
+      headers:{
+      'Content-Type': 'text/plain'
+      }
+    })
+    .then(res => res.json())
+    .then(response => {
+            
+            if(response.estatus=="OK"){
+               this.setState({ejecutivos:response.data});
+
+            }
+            //console.log(this.state.ejecutivos)
+
+    })
+    .catch(error => console.error('Error:', error));
+
+
+
+
+  }
+
   searchFiltro(texto){
 
-    console.log(texto)
+    //console.log(texto)
     this.setState({searchFiltro:texto});
 
   }
@@ -130,11 +247,20 @@ class App extends Component {
     }));
   }
 
-  estadoLogin() {
+  estadoLogin(data) {
+    //console.log(data)
+
+    if(data.anexo!=""){
+      this.setState({anexo:data.anexo});
+      this.setState(state => ({
+        estadoLogin: !state.estadoLogin
+      }));
+      this.pedirFichas();
+      this.pedirEjecutivos();
+
+    }
     
-    this.setState(state => ({
-      estadoLogin: !state.estadoLogin
-    }));
+    
   }
 
   actualizarFichas(fichas, grupos, overlays) {
@@ -151,12 +277,12 @@ class App extends Component {
         //RRECORRO EL PROCESO
         procesomanual.forEach(function(element_b, index_b) {
             
-            if(element_b.tag==element_a.estado_proceso){
+            if(element_b.tag==element_a.estado){
                 procesomanual[index_b].cantidad=procesomanual[index_b].cantidad+1
             }
             
             //SI EXISTEN CANALES EN EL PROCESO
-            if(element_b.canales.length>0 && element_b.tag==element_a.estado_proceso){
+            if(element_b.canales.length>0 && element_b.tag==element_a.estado){
 
               //RRECORRO LOS CANALES
                element_b.canales.forEach(function(element_c, index_c) {
@@ -196,7 +322,7 @@ class App extends Component {
         });
     })
     this.setState({procesomanual:procesomanual})
-    //console.log(this.state.procesomanual)
+    console.log(this.state.procesomanual)
 
     
   }
