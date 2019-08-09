@@ -88,3 +88,51 @@ background-color: #FFF;
     background-color: #007bff;
     border-color: #007bff;
 }
+
+.contenedorFormularios .form-control {
+    font-size: 12px;
+    font-weight: 300;
+    padding: .175rem .45rem;
+    border: 0.4px solid #CCC;
+
+}
+
+.contenedorFormularios .control-label{
+    font-size: 12px;
+    margin-bottom: 0px;
+
+}
+
+.contenedorFormularios .form-group{
+    margin-bottom: 5px;
+
+}
+
+.contenedorFormularios .panel-title{
+    font-size: 20px;
+    font-weight: 100;
+
+}
+
+::-webkit-scrollbar {
+            margin-right: 4px;
+            background-color: #CCCCCC;
+            width: 9px;
+            border: 4px #000 solid;
+        }
+        
+        
+        
+        
+        ::-webkit-scrollbar-thumb {
+            background: #666666;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background:#000;
+        }
+        
+        ::-webkit-scrollbar-track {
+            border: 4px #f5f5f5 solid;
+        }
+        

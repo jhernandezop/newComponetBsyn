@@ -31,7 +31,7 @@ class Login extends Component {
     const clave=document.getElementById("pass").value
     //return false;
 
-    fetch("https://bsadmin.openpartner.cl/", {
+    fetch("https://bsadmin.openpartner.cl/gdm", {
           "method": "POST",
           "headers": {
             "content-type": "text/plain"
@@ -83,8 +83,8 @@ class Login extends Component {
                 <form name="login">
                   <span id="div_login">
                     <div>Inicio de Sesión</div>
-                    <input id="id_pass" name="id_pass"  className="form-control form-control-lg" type="text" placeholder="Usuario" value="acuevas" />
-                    <input id="pass" name="pass" className="form-control form-control-lg" type="password" placeholder="Password" value="Cacuevas" />
+                    <input id="id_pass" name="id_pass"  className="form-control form-control-lg" type="text" placeholder="Usuario" value="opcerrillos" />
+                    <input id="pass" name="pass" className="form-control form-control-lg" type="password" placeholder="Password" value="1q2w3e.," />
                     <div id="msj" className=""></div>
                     <button type="button" id="login" className="btn btn-success btn-lg btn-block confirma_intencion"  onClick={this.login}>LOGIN</button>
                     <div className="ir_recuperar">¿Olvidaste tu clave?</div>

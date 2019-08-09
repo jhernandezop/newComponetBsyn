@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Form} from 'react-formio';
 import './AreaEdicion.css';
+import moment from 'moment';
 /*
 import { prueba } from './formularios/Prueba.json';
 import { agendamiento } from './formularios/Tipificacion_Agendamiento.json';
@@ -11,56 +12,77 @@ class AreaEdicion extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-       caso_ES:"", 
+    this.state = {  
+       ficha_S2_id:"",
+       ficha_C_T_id:"",
+       ficha_nro_gestion:"",
+       ficha_estado:"",
        expandida: false,
-       formulario:"detalleLLamada"
+       formulario:"detalleLLamada",
+       detalleLLamada:""
+
      }
 
-
+     this.ocultarfomrulario=this.ocultarfomrulario.bind(this)
+     this.mostrarfomrulario=this.mostrarfomrulario.bind(this)
+     
+     
   }
 
   actualizarformularios(nuevoFormulario){
-      this.setState({caso_ES:nuevoFormulario.formulario.caso_ES});
-      this.setState({expandida:true});
+    
+    console.log(nuevoFormulario.formulario[0])
+      this.setState({caso_ES:nuevoFormulario.formulario[0].caso_ES});
+      //ACTUALIZO ESTADO DEL AREA DE EDICION
+       this.setState({ficha_S2_id:nuevoFormulario.formulario[0].ficha.caso_ES});
+       this.setState({ficha_C_T_id:nuevoFormulario.formulario[0].ficha.caso_CAM});
+       this.setState({ficha_nro_gestion:nuevoFormulario.formulario[0].ficha.nro_gestion});
+       if(nuevoFormulario.formulario[0].ficha.estado_proceso=="nuevo"){
+            this.setState({ficha_estado:"nuevo"});
+        }else if(nuevoFormulario.formulario[0].ficha.estado_proceso=="en gestion"){
+            this.setState({ficha_estado:"en_gestion"});
+        }
+       
+
+      
+      this.setState({formulario:""});
       this.setState({formulario:"detalleLLamada"});
       
       const f=nuevoFormulario.formulario[0].datosFormulario
-      console.log(f.nu_documento)
-      console.log(detalleLLamada)
+      const newForm=detalleLLamada 
       //PESTAÑA INFO CLIENTE = detalleLLamada.components[0].components[0]
-      detalleLLamada.components[0].components[0].components[0].columns[0].components[0].defaultValue=f.nu_documento
-      detalleLLamada.components[0].components[0].components[0].columns[0].components[1].defaultValue=f.nombre+" "+f.Ap_paterno+" "+f.Ap_materno
-      detalleLLamada.components[0].components[0].components[0].columns[0].components[2].defaultValue=f.nu_telefono
+      newForm.components[0].components[0].components[0].columns[0].components[0].defaultValue=f.doc_nu_documento
+      newForm.components[0].components[0].components[0].columns[0].components[1].defaultValue=f.doc_nombre+" "+f.Ap_paterno+" "+f.doc_Ap_materno
+      newForm.components[0].components[0].components[0].columns[0].components[2].defaultValue=f.doc_nu_telefono
 
-      detalleLLamada.components[0].components[0].components[0].columns[1].components[0].defaultValue=f.nucotizacion
-      detalleLLamada.components[0].components[0].components[0].columns[1].components[1].defaultValue=f.version
-      detalleLLamada.components[0].components[0].components[0].columns[1].components[2].defaultValue=f.lugaratencion
+      newForm.components[0].components[0].components[0].columns[1].components[0].defaultValue=f.doc_nucotizacion
+      newForm.components[0].components[0].components[0].columns[1].components[1].defaultValue=f.doc_version
+      newForm.components[0].components[0].components[0].columns[1].components[2].defaultValue=f.doc_lugaratencion
 
-      detalleLLamada.components[0].components[0].components[1].columns[0].components[0].defaultValue=f.no_correo
-      detalleLLamada.components[0].components[0].components[1].columns[1].components[0].defaultValue=f.co_comuna
-      detalleLLamada.components[0].components[0].components[1].columns[2].components[0].defaultValue=f.no_direccion
-      //PESTAÑA INFORMACION COMPLEMENTARIA = detalleLLamada.components[0].components[1] 
+      newForm.components[0].components[0].components[1].columns[0].components[0].defaultValue=f.doc_no_correo
+      newForm.components[0].components[0].components[1].columns[1].components[0].defaultValue=f.doc_co_comuna
+      newForm.components[0].components[0].components[1].columns[2].components[0].defaultValue=f.doc_no_direccion
+      //PESTAÑA INFORMACION COMPLEMENTARIA = newForm.components[0].components[1] 
       //VEHICULO EN PARTE DE PAGO
-      detalleLLamada.components[0].components[1].components[0].components[0].columns[0].components[0].defaultValue=f.Retoma_no_patente
-      detalleLLamada.components[0].components[1].components[0].components[0].columns[0].components[1].defaultValue=f.Retoma_no_version
-      detalleLLamada.components[0].components[1].components[0].components[0].columns[1].components[0].defaultValue=f.Retoma_no_modelo
-      detalleLLamada.components[0].components[1].components[0].components[0].columns[1].components[1].defaultValue=f.Retoma_nu_anio
-      detalleLLamada.components[0].components[1].components[0].components[0].columns[2].components[0].defaultValue=f.Retoma_no_marca
-      detalleLLamada.components[0].components[1].components[0].components[0].columns[2].components[1].defaultValue=f.Retoma_ValorRetoma
+      newForm.components[0].components[1].components[0].components[0].columns[0].components[0].defaultValue=f.doc_Retoma_no_patente
+      newForm.components[0].components[1].components[0].components[0].columns[0].components[1].defaultValue=f.doc_Retoma_no_version
+      newForm.components[0].components[1].components[0].components[0].columns[1].components[0].defaultValue=f.doc_Retoma_no_modelo
+      newForm.components[0].components[1].components[0].components[0].columns[1].components[1].defaultValue=f.doc_Retoma_nu_anio
+      newForm.components[0].components[1].components[0].components[0].columns[2].components[0].defaultValue=f.doc_Retoma_no_marca
+      newForm.components[0].components[1].components[0].components[0].columns[2].components[1].defaultValue=f.doc_Retoma_ValorRetoma
       //CREDITO
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[0].components[0].defaultValue=f.Credito_Tipo
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[0].components[1].defaultValue=f.Credito_TotalaFinanciar
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[0].components[2].defaultValue=f.Credito_Saldo
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[1].components[0].defaultValue=f.Credito_MontoPie
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[1].components[1].defaultValue=f.Credito_ValorCuota
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[1].components[2].defaultValue=f.Credito_CAE
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[2].components[0].defaultValue=f.Credito_Cuotas
-      detalleLLamada.components[0].components[1].components[1].components[0].columns[2].components[1].defaultValue=f.Credito_CostoTotal
+      newForm.components[0].components[1].components[1].components[0].columns[0].components[0].defaultValue=f.doc_Credito_Tipo
+      newForm.components[0].components[1].components[1].components[0].columns[0].components[1].defaultValue=f.doc_Credito_TotalaFinanciar
+      newForm.components[0].components[1].components[1].components[0].columns[0].components[2].defaultValue=f.doc_Credito_Saldo
+      newForm.components[0].components[1].components[1].components[0].columns[1].components[0].defaultValue=f.doc_Credito_MontoPie
+      newForm.components[0].components[1].components[1].components[0].columns[1].components[1].defaultValue=f.doc_Credito_ValorCuota
+      newForm.components[0].components[1].components[1].components[0].columns[1].components[2].defaultValue=f.doc_Credito_CAE
+      newForm.components[0].components[1].components[1].components[0].columns[2].components[0].defaultValue=f.doc_Credito_Cuotas
+      newForm.components[0].components[1].components[1].components[0].columns[2].components[1].defaultValue=f.doc_Credito_CostoTotal
       //SEURO
-      detalleLLamada.components[0].components[1].components[2].components[0].columns[0].components[0].defaultValue=f.Seguro_Deducible
-      detalleLLamada.components[0].components[1].components[2].components[0].columns[1].components[0].defaultValue=f.Seguro_PrimaAnual
-      detalleLLamada.components[0].components[1].components[2].components[0].columns[2].components[0].defaultValue=f.Seguro_PrimaMensual
+      newForm.components[0].components[1].components[2].components[0].columns[0].components[0].defaultValue=f.doc_Seguro_Deducible
+      newForm.components[0].components[1].components[2].components[0].columns[1].components[0].defaultValue=f.doc_Seguro_PrimaAnual
+      newForm.components[0].components[1].components[2].components[0].columns[2].components[0].defaultValue=f.doc_Seguro_PrimaMensual
       //PESTAÑA HISTORICO = detalleLLamada.components[0].components[2] 
       //VEHICULO EN PARTE DE PAGO
       /*detalleLLamada.components[0].components[2].components[0].components[0].columns[0].components[0].defaultValue=f.nucotizacion
@@ -69,16 +91,43 @@ class AreaEdicion extends Component {
       detalleLLamada.components[0].components[2].components[0].components[0].columns[1].components[1].defaultValue=f.Retoma_nu_anio
       detalleLLamada.components[0].components[2].components[0].components[0].columns[2].components[0].defaultValue=f.Retoma_no_marca
       detalleLLamada.components[0].components[2].components[0].components[0].columns[2].components[1].defaultValue=f.Retoma_ValorRetoma*/
+      const ejecutivos = [];
+      const los_ejecitivos=this.props.ejecutivos
+      //console.log(los_ejecitivos)
+      los_ejecitivos.forEach(function(element) {
+        
+        ejecutivos.push({
+                                    "label": element.ConsultorVentas,
+                                    "value": element.RUT
+        })  
+
+      }); 
+
+      //RESULTADO DE LA LLAMADA
+      seguimiento.components[0].components[2].columns[0].components[0].data.values=ejecutivos
+      //console.log(seguimiento.components[0].components[2].columns[0].components[0].data.values)
+      
+      this.state.detalleLLamada=newForm
+      console.log(this.state)
+      this.mostrarfomrulario()
+      console.log(this.state)
+
+      //this.setState({expandida:true});
 
 
   }
 
 
   componentWillReceiveProps(nextProps){
-    //console.log(nextProps)
+    console.log(nextProps)
+     this.ocultarfomrulario()
+     
+     
     //console.log(nextProps.formulario.length)
     if(nextProps.formulario.length>0){
-     this.actualizarformularios(nextProps); 
+      
+      this.actualizarformularios(nextProps); 
+
     }
     
 
@@ -87,12 +136,145 @@ class AreaEdicion extends Component {
   }
 
   verFomrularioTipificacion(text) {
-    console.log(text)
-    this.setState({formulario:text});
+    console.log(this.state.ficha_estado)
+    if(text=="tipificacion"){
+        if(this.state.ficha_estado=="nuevo" || this.state.ficha_estado=="en gestion" || this.state.ficha_estado=="en_gestion"){
+            this.setState({formulario:"seguimiento"});
+        }else if(this.state.ficha_estado=="agendado_propio"){
+            this.setState({formulario:"tipificacion"});
+
+        }
+    }else if(text=="detalleLLamada"){
+        this.setState({formulario:"detalleLLamada"});
+    }
   }
 
   
 
+  enviargestion = (event) => {
+
+    document.getElementById("submit").setAttribute("disabled","disabled");
+
+    console.log(event)
+
+     //const fecha_seguimiento="";
+     //const fechas_seguimiento="";
+    if(event.data.select=="agendamiento_tercero"){
+
+
+
+        console.log(event.data.fechaDeAgendamiento)
+        const los_ejecitivos=this.props.ejecutivos 
+        const datos_ejecutivo = []
+        los_ejecitivos.forEach(function(element) {
+            if(element.RUT==event.data.ejecutivoDePiso){
+                //console.log(rut, element.Sucursal) 
+                datos_ejecutivo.push(element.Sucursal, element.COMUNA, element.CIUDAD)
+                
+            }
+        })
+       
+        console.log(datos_ejecutivo)
+        //const fechas_seguimiento=event.data.fechaDeAgendamiento
+        //const fechas_seguimiento=fecha_seguimiento.split("T",2)
+        this.props.formulario[0].datosFormulario["fecha_seguimiento"]=""
+        this.props.formulario[0].datosFormulario["hora_seguimiento"]=""
+        this.props.formulario[0].datosFormulario["tipo_seguimiento"]=""
+        this.props.formulario[0].datosFormulario["comentario_piso"]=event.data.comentarioAEjecutivo
+        this.props.formulario[0].datosFormulario["comentario_gestion"]=event.data.comentarios
+        this.props.formulario[0].datosFormulario["sucursal_agenda"]=datos_ejecutivo[0]
+        this.props.formulario[0].datosFormulario["ciudad_agenda"]=datos_ejecutivo[2]
+        this.props.formulario[0].datosFormulario["comuna_agenda"]=datos_ejecutivo[1]
+        this.props.formulario[0].datosFormulario["fecha_agenda"]=event.data.fechaDeAgendamiento.slice(0, 10)
+        this.props.formulario[0].datosFormulario["hora_agenda"]=event.data.fechaDeAgendamiento.slice(11, 18)
+        this.props.formulario[0].datosFormulario["rut_asesor_comercial"]=event.data.ejecutivoDePiso
+        this.props.formulario[0].datosFormulario["puntodeventa"]=event.data.ejecutivoDePiso
+    }else{
+
+        this.props.formulario[0].datosFormulario["fecha_seguimiento"]=""
+        this.props.formulario[0].datosFormulario["hora_seguimiento"]=""
+        this.props.formulario[0].datosFormulario["tipo_seguimiento"]=""
+        this.props.formulario[0].datosFormulario["comentario_piso"]=""
+        this.props.formulario[0].datosFormulario["comentario_gestion"]=""
+        this.props.formulario[0].datosFormulario["sucursal_agenda"]=""
+        this.props.formulario[0].datosFormulario["ciudad_agenda"]=""
+        this.props.formulario[0].datosFormulario["comuna_agenda"]=""
+        this.props.formulario[0].datosFormulario["fecha_agenda"]=""
+        this.props.formulario[0].datosFormulario["hora_agenda"]=""
+        this.props.formulario[0].datosFormulario["rut_asesor_comercial"]=""
+        this.props.formulario[0].datosFormulario["puntodeventa"]=""
+
+    }
+       
+    
+    this.props.formulario[0].datosFormulario["resultado_llamada"]=event.data.select
+
+    const transaccion={
+                        "tx":"gesSV",
+                        "ts_o":moment().format('YYYY-MM-DDTHH:mm:ss'),
+                        "tx_user":this.props.anexo,
+                        "origen":"sv",
+                        "caso": {
+                            "nro_gestion": this.state.ficha_nro_gestion,
+                            "S2_id":this.state.ficha_S2_id,
+                            "resultado_llamada": event.data.select,
+                            "C_T_id":this.state.ficha_C_T_id,
+                            "user":this.props.anexo,
+                            "tipo":"",
+                            "padre":"0",
+                            "campania":"",
+                            "estado":this.state.ficha_estado,
+                            "comentario_sv":event.data.comentarios,
+                        },
+                        "gestion":{},
+                        "gestion_data":this.props.formulario[0].datosFormulario
+                        }
+
+                    console.log(transaccion)
+
+          var url = 'https://bscore.openpartner.cl/gdm';
+         
+            fetch(url, {
+              method: 'POST', 
+              body: JSON.stringify(transaccion), 
+              headers:{
+              'Content-Type': 'text/plain'
+              }
+            })
+            .then(res => res.json())
+            .then(response => {if(response){
+                            console.log(response);
+                             this.props.pedirFichas()
+                              this.setState({expandida:false});
+
+                            }})
+            .catch(error => console.error('Error:', error));
+        
+
+    
+  }
+
+  actualizar = (event) => {
+
+    console.log(this.state)
+    console.log(event.data)
+    const actualizar=event.data
+    this.setState({expandida:false});
+    
+
+  }
+ 
+ocultarfomrulario() {
+    
+
+    this.setState({expandida:false});
+    
+  }
+
+mostrarfomrulario() {
+    
+    this.setState({expandida:true});
+  }
  
 /*<div key={key} className="form-group">
           <label for={"exampleInputEmail1"+key}>{key}</label>
@@ -100,21 +282,26 @@ class AreaEdicion extends Component {
         </div>*/
   render(){
     
+    
 
 /*{formulario}*/
-    if(this.state.expandida==true){
+    if(this.state.expandida==true ){
+
+           
        
             return ( 
-              <div className='row contenedorFormularios'>
+              <div id="contenedorFormularios"  className='row contenedorFormularios'>
 
-                {this.state.formulario=="detalleLLamada" && <Form form={detalleLLamada} onSubmit={console.log} />}
-                {this.state.formulario=="seguimiento" && <Form form={seguimiento} onSubmit={console.log} />}
-                {this.state.formulario=="tipificacion" && <Form form={tipificacion} onSubmit={console.log} />}
+                {this.state.formulario=="detalleLLamada" && <Form form={this.state.detalleLLamada} onSubmit={this.actualizar} />}
+                {this.state.formulario=="seguimiento" && <Form form={seguimiento} onSubmit={this.enviargestion} />}
+                {this.state.formulario=="tipificacion" && <Form form={tipificacion} onSubmit={this.enviargestion} />}
+
                 <div className="btn-group"  role="group" aria-label="Basic example">
                   <button type="button" onClick={() => this.verFomrularioTipificacion("detalleLLamada")} className="btn btn-secondary">Detalle</button>
-                  <button type="button" onClick={() => this.verFomrularioTipificacion("seguimiento")} className="btn btn-secondary">Seguimiento</button>
                   <button type="button" onClick={() => this.verFomrularioTipificacion("tipificacion")} className="btn btn-secondary">Tipificar</button>
-                  <button type="button" onClick={() => this.props.estadoAgenda()} className="btn btn-secondary">Agendar</button>
+                  <button type="button" onClick={this.ocultarfomrulario} className="btn btn-secondary">salir</button>
+                  
+                  
                 </div>
                 
                 
@@ -3547,7 +3734,7 @@ const detalleLLamada={
             "properties": {},
             "customConditional": "",
             "logic": []
-        },
+        }/*,
         {
             "type": "button",
             "label": "Actualizar",
@@ -3556,7 +3743,7 @@ const detalleLLamada={
             "theme": "primary",
             "input": true,
             "tableView": true
-        }
+        }*/
     ],
     "settings": {
         "pdf": {
@@ -3598,6 +3785,7 @@ const seguimiento= {
                     "validate": {
                         "customMessage": "",
                         "json": "",
+                        "required": true,
                         "select": false
                     },
                     "conditional": {
@@ -3640,12 +3828,12 @@ const seguimiento= {
                     "customConditional": "",
                     "logic": [],
                     "attributes": {},
-                    "reorder": false,
                     "lazyLoad": false,
                     "selectValues": "",
                     "disableLimit": false,
                     "sort": "",
-                    "reference": false
+                    "reference": false,
+                    "reorder": false
                 },
                 {
                     "label": "Comentarios",
@@ -3656,7 +3844,7 @@ const seguimiento= {
                     "type": "textarea",
                     "input": true,
                     "key": "comentarios",
-                    "defaultValue": "escribir...",
+                    "defaultValue": "",
                     "validate": {
                         "customMessage": "",
                         "json": ""
@@ -3693,9 +3881,10 @@ const seguimiento= {
                                     "input": true,
                                     "key": "ejecutivoDePiso",
                                     "validate": {
-                                        "select": false,
                                         "customMessage": "",
-                                        "json": ""
+                                        "json": "",
+                                        "required": true,
+                                        "select": false
                                     },
                                     "conditional": {
                                         "show": "",
@@ -3726,45 +3915,105 @@ const seguimiento= {
                                     "reorder": false
                                 },
                                 {
-                                    "label": "Enviar correo a Cliente",
-                                    "labelPosition": "left-left",
-                                    "optionsLabelPosition": "right",
-                                    "values": [
-                                        {
-                                            "label": "",
-                                            "value": "",
-                                            "shortcut": ""
-                                        }
-                                    ],
+                                    "label": "Fecha de Agendamiento",
                                     "mask": false,
                                     "tableView": true,
                                     "alwaysEnabled": false,
-                                    "type": "selectboxes",
+                                    "type": "datetime",
                                     "input": true,
-                                    "key": "enviarCorreoACliente",
-                                    "defaultValue": {
-                                        "": false
+                                    "key": "fechaDeAgendamiento",
+                                    "suffix": true,
+                                    "defaultValue": "",
+                                    "widget": {
+                                        "type": "calendar",
+                                        "displayInTimezone": "viewer",
+                                        "submissionTimezone": "America/Santiago",
+                                        "language": "en",
+                                        "useLocaleSettings": false,
+                                        "allowInput": true,
+                                        "mode": "single",
+                                        "enableTime": true,
+                                        "noCalendar": false,
+                                        "format": "yyyy-MM-dd hh:mm a",
+                                        "defaultDate": "",
+                                        "hourIncrement": 30,
+                                        "minuteIncrement": 1,
+                                        "time_24hr": false,
+                                        "minDate": "",
+                                        "maxDate": "",
+                                        "icons": "fontawesome",
+                                        "i18n": {
+                                            "lng": "en",
+                                            "resources": {
+                                                "en": {
+                                                    "translation": {
+                                                        "complete": "Submission Complete",
+                                                        "error": "Please fix the following errors before submitting.",
+                                                        "required": "{{field}} is required",
+                                                        "pattern": "{{field}} does not match the pattern {{pattern}}",
+                                                        "minLength": "{{field}} must be longer than {{length}} characters.",
+                                                        "maxLength": "{{field}} must be shorter than {{length}} characters.",
+                                                        "minWords": "{{field}} must have more than {{length}} words.",
+                                                        "maxWords": "{{field}} must have less than {{length}} words.",
+                                                        "min": "{{field}} cannot be less than {{min}}.",
+                                                        "max": "{{field}} cannot be greater than {{max}}.",
+                                                        "minSelectedCount": "You must select at least {{minCount}} items to continue.",
+                                                        "maxSelectedCount": "You can only select up to {{maxCount}} items to continue.",
+                                                        "maxDate": "{{field}} should not contain date after {{- maxDate}}",
+                                                        "minDate": "{{field}} should not contain date before {{- minDate}}",
+                                                        "invalid_email": "{{field}} must be a valid email.",
+                                                        "invalid_url": "{{field}} must be a valid url.",
+                                                        "invalid_regex": "{{field}} does not match the pattern {{regex}}.",
+                                                        "invalid_date": "{{field}} is not a valid date.",
+                                                        "invalid_day": "{{field}} is not a valid day.",
+                                                        "mask": "{{field}} does not match the mask.",
+                                                        "stripe": "{{stripe}}",
+                                                        "month": "Month",
+                                                        "day": "Day",
+                                                        "year": "Year",
+                                                        "january": "January",
+                                                        "february": "February",
+                                                        "march": "March",
+                                                        "april": "April",
+                                                        "may": "May",
+                                                        "june": "June",
+                                                        "july": "July",
+                                                        "august": "August",
+                                                        "september": "September",
+                                                        "october": "October",
+                                                        "november": "November",
+                                                        "december": "December",
+                                                        "next": "Next",
+                                                        "previous": "Previous",
+                                                        "cancel": "Cancel",
+                                                        "submit": "Submit Form"
+                                                    }
+                                                }
+                                            }
+                                        }
                                     },
                                     "validate": {
                                         "customMessage": "",
-                                        "json": ""
+                                        "json": "",
+                                        "required": true
                                     },
                                     "conditional": {
-                                        "show": "true",
-                                        "when": "select",
-                                        "eq": "conAgendamiento",
+                                        "show": "",
+                                        "when": "",
                                         "json": ""
                                     },
-                                    "inputType": "checkbox",
-                                    "customConditional": "",
+                                    "datePicker": {
+                                        "minDate": "",
+                                        "maxDate": ""
+                                    },
                                     "encrypted": false,
-                                    "minSelectedCountMessage": "",
-                                    "maxSelectedCountMessage": "",
                                     "properties": {},
+                                    "customConditional": "",
                                     "logic": [],
                                     "attributes": {},
-                                    "labelWidth": 29,
-                                    "labelMargin": 1,
+                                    "timePicker": {
+                                        "hourStep": 30
+                                    },
                                     "reorder": false
                                 }
                             ],
@@ -3815,35 +4064,46 @@ const seguimiento= {
                                     "attributes": {}
                                 },
                                 {
-                                    "label": "Agendar en calendario",
-                                    "state": "",
-                                    "shortcut": "",
+                                    "label": "Enviar correo a Cliente",
+                                    "labelPosition": "left-left",
+                                    "optionsLabelPosition": "right",
+                                    "values": [
+                                        {
+                                            "label": "",
+                                            "value": "",
+                                            "shortcut": ""
+                                        }
+                                    ],
                                     "mask": false,
                                     "tableView": true,
                                     "alwaysEnabled": false,
-                                    "type": "button",
+                                    "type": "selectboxes",
                                     "input": true,
-                                    "key": "agendarEnCalendario",
-                                    "defaultValue": false,
+                                    "key": "enviarCorreoACliente",
+                                    "defaultValue": {
+                                        "": false
+                                    },
                                     "validate": {
                                         "customMessage": "",
                                         "json": ""
                                     },
                                     "conditional": {
-                                        "show": "",
-                                        "when": "",
+                                        "show": "true",
+                                        "when": "select",
+                                        "eq": "conAgendamiento",
                                         "json": ""
                                     },
-                                    "showValidations": false,
-                                    "event": "",
-                                    "url": "",
-                                    "custom": "",
-                                    "reorder": false,
-                                    "encrypted": false,
-                                    "properties": {},
+                                    "inputType": "checkbox",
                                     "customConditional": "",
+                                    "encrypted": false,
+                                    "minSelectedCountMessage": "",
+                                    "maxSelectedCountMessage": "",
+                                    "properties": {},
                                     "logic": [],
-                                    "attributes": {}
+                                    "attributes": {},
+                                    "labelWidth": 29,
+                                    "labelMargin": 1,
+                                    "reorder": false
                                 }
                             ],
                             "width": 6,

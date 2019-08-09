@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './login.css';
 import './ficha.css';
-
+import moment from 'moment';
 
 
 class ConstruirFichas extends Component {
@@ -93,17 +93,17 @@ class UnaFicha extends Component {
          this.props.desplegarEdicion(["1"], this.state.caso_ES);
       }else{
 
-          var url = 'https://bscore.openpartner.cl/';
+          var url = 'https://bscore.openpartner.cl/gdm';
           var data = {
                       "tx": "doc0",
-                      "ts_o": "2019-08-07T17:30:58",
+                      "ts_o": moment().format('YYYY-MM-DDTHH:mm:ss'),
                       "tx_user": "",
                       "origen": "face",
                       "caso": {
                         "user": "3099",
                         "tipo": "",
-                        "S2_id": "1565191644097",
-                        "C_T_id": "b808421c-b928-11e9-8ea2-0af90a69b8d6",
+                        "S2_id": this.state.caso_ES,
+                        "C_T_id": this.state.caso_CAM,
                         "campania": "",
                         "estado": ""
                       }
@@ -116,9 +116,9 @@ class UnaFicha extends Component {
               }
             })
             .then(res => res.json())
-            .then(response => {if(response){
+            .then(response => {if(response.data){
                             console.log(response);
-                              this.props.desplegarEdicion(response.data, this.state.caso_ES);
+                              this.props.desplegarEdicion(response.data, this.state);
                               
 
                             }})
@@ -163,6 +163,8 @@ class UnaFicha extends Component {
       return true;
     }else{
       for (const prop in ficha) {
+        console.log(prop)
+        console.log(ficha[prop])
         if(typeof (ficha[prop])=="string"){
             const dimension = this.props.searchFiltro.length
             if(ficha[prop].slice(0, dimension)==this.props.searchFiltro){
