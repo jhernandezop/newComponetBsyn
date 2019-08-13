@@ -9,6 +9,7 @@
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-big-calendar": "^0.22.0",
+    "react-date-range": "^0.9.4",
     "react-dom": "^16.8.6",
     "react-draggable": "^3.3.0",
     "react-formio": "^3.1.12",
