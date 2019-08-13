@@ -37,7 +37,7 @@
 
 #linea_proceso .cantidad:hover{
    cursor: pointer;
-   background: #875A7B;
+   /*background: #875A7B;*/
 }
 
 #linea_proceso  .off{

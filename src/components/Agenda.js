@@ -27,29 +27,33 @@ class Agenda extends Component {
     	this.newEvent = this.newEvent.bind(this)
 	  }
 
+	   componentDidMount(nextProps) {
+	   	console.log(nextProps)
+		}
+
 	  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
-    const { events } = this.state
+	    const { events } = this.state
 
-    const idx = events.indexOf(event)
-    let allDay = event.allDay
+	    const idx = events.indexOf(event)
+	    let allDay = event.allDay
 
-    if (!event.allDay && droppedOnAllDaySlot) {
-      allDay = true
-    } else if (event.allDay && !droppedOnAllDaySlot) {
-      allDay = false
-    }
+	    if (!event.allDay && droppedOnAllDaySlot) {
+	      allDay = true
+	    } else if (event.allDay && !droppedOnAllDaySlot) {
+	      allDay = false
+	    }
 
-    const updatedEvent = { ...event, start, end, allDay }
+	    const updatedEvent = { ...event, start, end, allDay }
 
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, updatedEvent)
+	    const nextEvents = [...events]
+	    nextEvents.splice(idx, 1, updatedEvent)
 
-    this.setState({
-      events: nextEvents,
-    })
+	    this.setState({
+	      events: nextEvents,
+	    })
 
-    // alert(`${event.title} was dropped onto ${updatedEvent.start}`)
-  }
+	    // alert(`${event.title} was dropped onto ${updatedEvent.start}`)
+	  }
 
   resizeEvent = ({ event, start, end }) => {
     const { events } = this.state

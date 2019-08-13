@@ -213,12 +213,14 @@ class AreaEdicion extends Component {
                         "tx":"gesSV",
                         "ts_o":moment().format('YYYY-MM-DDTHH:mm:ss'),
                         "tx_user":this.props.anexo,
-                        "origen":"sv",
+                        "destino":"test",
+                        "tx_version" : "0.3",
+                        "origen":"face",
                         "caso": {
                             "nro_gestion": this.state.ficha_nro_gestion,
                             "S2_id":this.state.ficha_S2_id,
                             "resultado_llamada": event.data.select,
-                            "C_T_id":this.state.ficha_C_T_id,
+                            "casoCAM":this.state.ficha_C_T_id,
                             "user":this.props.anexo,
                             "tipo":"",
                             "padre":"0",
@@ -265,6 +267,8 @@ class AreaEdicion extends Component {
   }
  
 ocultarfomrulario() {
+
+
     
 
     this.setState({expandida:false});
@@ -281,6 +285,8 @@ mostrarfomrulario() {
           <input type={key} value={formulario[key]} className="form-control" id={"Input"+key} aria-describedby={key} placeholder={"Enter"+key} />
         </div>*/
   render(){
+
+    const detalle = <Form form={this.state.detalleLLamada} onSubmit={this.actualizar} />
     
     
 
@@ -289,9 +295,10 @@ mostrarfomrulario() {
 
            
        
-            return ( 
-              <div id="contenedorFormularios"  className='row contenedorFormularios'>
+            return (
 
+              <div id="contenedorFormularios"  className='row contenedorFormularios'>
+                
                 {this.state.formulario=="detalleLLamada" && <Form form={this.state.detalleLLamada} onSubmit={this.actualizar} />}
                 {this.state.formulario=="seguimiento" && <Form form={seguimiento} onSubmit={this.enviargestion} />}
                 {this.state.formulario=="tipificacion" && <Form form={tipificacion} onSubmit={this.enviargestion} />}
@@ -299,7 +306,7 @@ mostrarfomrulario() {
                 <div className="btn-group"  role="group" aria-label="Basic example">
                   <button type="button" onClick={() => this.verFomrularioTipificacion("detalleLLamada")} className="btn btn-secondary">Detalle</button>
                   <button type="button" onClick={() => this.verFomrularioTipificacion("tipificacion")} className="btn btn-secondary">Tipificar</button>
-                  <button type="button" onClick={this.ocultarfomrulario} className="btn btn-secondary">salir</button>
+                  
                   
                   
                 </div>
@@ -3734,7 +3741,7 @@ const detalleLLamada={
             "properties": {},
             "customConditional": "",
             "logic": []
-        }/*,
+        }/**/,
         {
             "type": "button",
             "label": "Actualizar",
@@ -3743,7 +3750,7 @@ const detalleLLamada={
             "theme": "primary",
             "input": true,
             "tableView": true
-        }*/
+        }
     ],
     "settings": {
         "pdf": {

@@ -38,7 +38,7 @@ class Vertelefono extends Component {
                   "content-type": "application/json"
                 },
                 "body": JSON.stringify({
-                  "agente": "3999",
+                  "agente": this.props.anexo,
                   "accion": "Llamar",
                   "datos": {
                     "destino": this.state.numero

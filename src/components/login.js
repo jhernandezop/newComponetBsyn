@@ -61,6 +61,7 @@ class Login extends Component {
 
             if(response.data[4].contraseña==clave && response.data[4].usuario==usuario && response.data[4].anexo!=""){
               this.props.estadoLogin(response.data[4])
+              
             }else{
               //alert("invalido")
                document.getElementById("msj").innerHTML="Datos invalidos";

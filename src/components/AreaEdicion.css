@@ -3,7 +3,7 @@
     position: absolute;
     top: 0;
     bottom: 0px;
-    overflow: hidden;
+    /**/overflow: hidden;
     overflow-y: auto;
     width: inherit;
     background-color:#d6d6d6;
@@ -126,6 +126,7 @@ background-color: #FFF;
         
         ::-webkit-scrollbar-thumb {
             background: #666666;
+            margin-right: 50px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
@@ -133,6 +134,6 @@ background-color: #FFF;
         }
         
         ::-webkit-scrollbar-track {
-            border: 4px #f5f5f5 solid;
+            border: 5px #CCC solid;
         }
         

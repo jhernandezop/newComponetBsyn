@@ -76,7 +76,7 @@ class Timelines extends Component {
         //console.log("prueba0: "+JSON.stringify(this.state));
         //console.log("prueba1: "+JSON.stringify(data.data));
         this.setState({
-          timelinedata: data.data
+          timelinedata: data.data.hits.hits
         });
         //console.log("prueba3: "+JSON.stringify(this.state));
       },
@@ -95,10 +95,12 @@ class Timelines extends Component {
   render() {
    
     // acá actualizo el componente y recorro el estado com map
+
+
     const timelinedata = this.state.timelinedata.map((timeline, index) => {
       //console.log('todo: '+ JSON.stringify(timeline._source.ges_ts));
       
-      if(timeline._source.ges_ts == undefined){
+      if(!timeline._source.ges_ts){
          // esta es la primera gestion
          var str = timeline._source.caso_ts;
          var res = str.split(".");
@@ -150,11 +152,11 @@ class Timelines extends Component {
     
     // el return devuelve el conenido
     return(
-            <div className="row">
+            
               <Timeline lineColor={'#9e9d9d'}>
                 {timelinedata} 
               </Timeline>
-            </div>
+            
 
      
     )

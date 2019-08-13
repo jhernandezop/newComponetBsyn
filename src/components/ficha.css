@@ -1,10 +1,12 @@
 #divFichas{
     position: absolute;
-    top: 0px;
-    bottom:auto;
+    top: 25%;
+    bottom: auto;
     right: 15px;
     left: 15px;
     background: #f9f9f9;
+    overflow-y: auto;
+    bottom: 0px;
 
 }
 
